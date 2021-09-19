@@ -41,20 +41,12 @@ function drawBoard() {
 
 drawBoard();
 
-const colors = [
-    ['red'],
-    ['orange'],
-    ['yellow'],
-    ['green'],
-    ['skyblue'],
-    ['pink'],
-    ['purple']
-]
+const colors = ['red','orange','yellow','green','skyblue','pink','purple'];
 
 // generate blocks
 function setBlock() {
     let random = Math.floor(Math.random() * colors.length)
-    return new Block(colors[random][0])
+    return new Block(colors[random])
 }
 
 let item = setBlock();
@@ -186,7 +178,7 @@ Block.prototype.collision = function(x, y, block) {
 // control the block
 document.addEventListener('mouseover', CONTROL);
 function CONTROL(event) {
-    if (event.clientX <= (item.x * 20) + 20) {          
+    if (event.clientX <= (item.x * 20) + 20) {
         if (item.x >= 0) {
             console.log({clientX:event.clientX})
             console.log({itemX:item.x * 20 + 20})
