@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyledCell } from './styles/StyledCell';
-import { randomColor } from '../tetrominos';;
+import { TETROMINOS } from '../tetrominos';;
 
-const Cell = () => (
-    <StyledCell color={randomColor()} />
+const Cell = ({type}) => (
+    <StyledCell type={type} color={TETROMINOS[type].color} />
 )
 
 export default Cell;
