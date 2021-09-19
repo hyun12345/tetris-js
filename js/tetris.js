@@ -120,7 +120,6 @@ Block.prototype.moveRight = function() {
 }
 
 Block.prototype.lock = function() {
-    console.log(gameOver);
     for (r = 0; r < this.block.length; r++) {
         for (c = 0; c < this.block.length; c++) {
             // skip the empty cell
@@ -187,11 +186,18 @@ Block.prototype.collision = function(x, y, block) {
 // control the block
 document.addEventListener('mouseover', CONTROL);
 function CONTROL(event) {
-    if (event.clientX < (item.x * 20) + 40) {
-        console.log(event.clientX);
-        item.moveLeft();
-    } else if (event.clientX > (item.x * 20) - 20) {
-        item.moveRight();
+    if (event.clientX <= (item.x * 20) + 20) {          
+        if (item.x >= 0) {
+            console.log({clientX:event.clientX})
+            console.log({itemX:item.x * 20 + 20})
+            item.moveLeft();
+        }
+    } else if (event.clientX >= (item.x * 20) - 20) {
+        if (item.x <= 200) {
+            console.log({clientX:event.clientX})
+            console.log({itemX:item.x * 20 - 20})
+            item.moveRight();
+        }
     }
 }
 
@@ -201,7 +207,7 @@ let gameOver = false;
 function drop() {
     let now = Date.now();
     let delta = now - dropStart;
-    if (delta > 80) {
+    if (delta > 1000) {
         item.moveDown();
         dropStart = Date.now();
     }
