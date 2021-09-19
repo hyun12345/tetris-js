@@ -47,7 +47,7 @@ const colors = [
     ['yellow'],
     ['green'],
     ['skyblue'],
-    ['deepblue'],
+    ['pink'],
     ['purple']
 ]
 
@@ -65,7 +65,7 @@ function Block(color) {
     this.color = color;
 
     this.x = 3;
-    this.y = -2;
+    this.y = -3;
 }
 
 // fill function
@@ -96,6 +96,7 @@ Block.prototype.moveDown = function() {
         this.y++;
         this.draw();
     } else {
+        this.lock();
         item = setBlock();
     }
 }
@@ -115,6 +116,24 @@ Block.prototype.moveRight = function() {
         this.undraw();
         this.x++;
         this.draw();
+    }
+}
+
+Block.prototype.lock = function() {
+    console.log(gameOver);
+    for (c = 0; c < this.block.length; c++) {
+        for (r = 0; r < this.block.length; r++) {
+            // skip the empty cell
+            if (!this.block[c][r]) {
+                continue;
+            }
+            // gameover : if block touch the top
+            if (this.y + c < 0) {
+                gameOver = true;
+                break;
+            }
+            board[this.y + c][this.x + r] = this.color;
+        }
     }
 }
 
@@ -157,14 +176,19 @@ function CONTROL(event) {
 
 // drop the block every 1sec
 let dropStart = Date.now();
+let gameOver = false;
 function drop() {
     let now = Date.now();
     let delta = now - dropStart;
-    if (delta > 1000) {
+    if (delta > 100) {
         item.moveDown();
         dropStart = Date.now();
     }
-    requestAnimationFrame(drop);
+    if (!gameOver) {
+        requestAnimationFrame(drop);
+    } else {
+        alert('Game Over');
+    }
 }
 
 drop();
