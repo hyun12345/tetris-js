@@ -12,7 +12,7 @@ export const useCanvas = (current, resetCurrent) => {
                 row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell)),
             );
 
-            // 2 : draw block(tetromino)
+            // 2 : draw tetromino
             current.tetromino.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
@@ -23,12 +23,16 @@ export const useCanvas = (current, resetCurrent) => {
                     }
                 });
             });
+            // check if collided or not
+            if (current.collided) {
+                resetCurrent();
+            }
 
             return newCanvas;
         };
 
         setCanvas(prev => updateCanvas(prev));
-    }, [current]);
+    }, [current, resetCurrent]);
 
     return [canvas, setCanvas];
 }

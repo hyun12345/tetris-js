@@ -22,7 +22,7 @@ export const useCurrent = () => {
     // reset
     const resetCurrent = useCallback(() => {
         setCurrent({
-            pos: {x:((CANVAS_WIDTH / 2 ) - 2), y:0},
+            pos: {x:((CANVAS_WIDTH / 2 ) - 1), y:0},
             tetromino: setBlock().shape,
             collided: false
         })

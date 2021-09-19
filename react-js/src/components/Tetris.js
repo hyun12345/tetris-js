@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { createCanvas } from '../settingGame';
+import { createCanvas, checkCollision } from '../settingGame';
 
 // styled-components
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
@@ -19,22 +19,34 @@ const Tetris = () => {
     const [gameOver, setGameOver] = useState(false);
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
-    const [canvas, setCanvas] = useCanvas(current);
+    const [canvas, setCanvas] = useCanvas(current, resetCurrent);
 
     console.log('re-render');
 
-    const moveCurrent = dir => {
-        updateCurrentPos({x:dir, y:0});
+    const moveCurrent = (dir) => {
+        if (!checkCollision(current, canvas, {x:dir, y:0})) {
+            updateCurrentPos({x:dir, y:0});
+        }
     }
     
     // set(reset) game
     const startGame = () => {
         setCanvas(createCanvas());
         resetCurrent();
+        setGameOver(false);
     }
 
     const drop = () => {
-        updateCurrentPos({x:0, y:1, collied:false});
+        if (!checkCollision(current, canvas, {x:0, y:1})) {
+            updateCurrentPos({x:0, y:1, collided:false});
+        } else {
+            // game over
+            if (current.pos.y < 1) {
+                setGameOver(true);
+                setDropTime(null);
+            }
+            updateCurrentPos({x:0, y:0, collided:true});
+        }
     }
 
     const dropCurrent = () => {
@@ -49,7 +61,7 @@ const Tetris = () => {
             } else if (keyCode === 39) {
                 moveCurrent(1);
             } else if (keyCode === 40) {
-                moveCurrent();
+                dropCurrent();
             }
         }
     }
