@@ -1,8 +1,8 @@
 const cvs = document.getElementById('tetris');
 const ctx = cvs.getContext('2d');
 
-const row = 10;
-const col = 20;
+const row = 20;
+const col = 10;
 const cell = 20;
 const VACANT = 'white';
 
@@ -23,18 +23,18 @@ function drawCell(x, y, color) {
 
 // create the board
 let board = [];
-for (c = 0; c < col; c++) {
-    board[c] = [];
-    for (r = 0; r < row; r++) {
-        board[c][r] = VACANT;
+for (r = 0; r < row; r++) {
+    board[r] = [];
+    for (c = 0; c < col; c++) {
+        board[r][c] = VACANT;
     }
 }
 
 // draw the board
 function drawBoard() {
-    for (c = 0; c < col; c++) {
-        for (r = 0; r < row; r++) {
-            drawCell(r, c, board[c][r]);
+    for (r = 0; r < row; r++) {
+        for (c = 0; c < col; c++) {
+            drawCell(c, r, board[r][c]);
         }
     }
 }
@@ -70,10 +70,10 @@ function Block(color) {
 
 // fill function
 Block.prototype.fill = function(color) {
-    for (c = 0; c < this.block.length; c++) {
-        for (r = 0; r < this.block.length; r++) {
-            if (this.block[c][r]) {
-                drawCell(this.x + r, this.y + c, color);
+    for (r = 0; r < this.block.length; r++) {
+        for (c = 0; c < this.block.length; c++) {
+            if (this.block[r][c]) {
+                drawCell(this.x + c, this.y + r, color);
             }
         }
     }
@@ -121,34 +121,55 @@ Block.prototype.moveRight = function() {
 
 Block.prototype.lock = function() {
     console.log(gameOver);
-    for (c = 0; c < this.block.length; c++) {
-        for (r = 0; r < this.block.length; r++) {
+    for (r = 0; r < this.block.length; r++) {
+        for (c = 0; c < this.block.length; c++) {
             // skip the empty cell
-            if (!this.block[c][r]) {
+            if (!this.block[r][c]) {
                 continue;
             }
             // gameover : if block touch the top
-            if (this.y + c < 0) {
+            if (this.y + r < 0) {
                 gameOver = true;
                 break;
             }
-            board[this.y + c][this.x + r] = this.color;
+            board[this.y + r][this.x + c] = this.color;
         }
     }
+    // remove full rows
+    for(r = 0; r < row; r++) {
+        let isRowFull = true;
+        for(c = 0; c < col; c++) {
+            isRowFull = isRowFull && (board[r][c] != VACANT);
+        }  
+        if (isRowFull) {
+            for(y = r; y > 1; y--) {
+                for(c = 0; c < col; c++) {
+                    board[y][c] = board[y-1][c];
+                }
+            }
+            for(c = 0; c < col; c++) {
+                board[0][c] = VACANT;
+            }
+        }
+    }
+    // update the board
+    drawBoard();
 }
+
+
 
 // colision function
 Block.prototype.collision = function(x, y, block) {
-    for (c = 0; c < block.length; c++) {
-        for (r = 0; r < block.length; r++) {
+    for (r = 0; r < block.length; r++) {
+        for (c = 0; c < block.length; c++) {
             // skip when cell is empty
-            if(!block[c][r]) {
+            if(!block[r][c]) {
                 continue;
             }
-            let newX = this.x + r + x;
-            let newY = this.y + c + y;
+            let newX = this.x + c + x;
+            let newY = this.y + r + y;
 
-            if (newX < 0 || newX >= row || newY >= col) {
+            if (newX < 0 || newX >= col || newY >= row) {
                 return true;
             }
 
@@ -180,7 +201,7 @@ let gameOver = false;
 function drop() {
     let now = Date.now();
     let delta = now - dropStart;
-    if (delta > 100) {
+    if (delta > 80) {
         item.moveDown();
         dropStart = Date.now();
     }
