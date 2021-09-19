@@ -1,22 +1,25 @@
 import React from 'react';
 
-import {createBoard} from '../settingGame';
+import {createCanvas} from '../settingGame';
+import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 
-import Board from './Board';
+import Canvas from './Canvas';
 import Display from './Display';
 import StartButton from './StartButton';
 
 const Tetris = () => {
     return (
-        <div>
-            <Board board={createBoard()} />
-            <aside>
-                <div>
-                    <Display text="Rows" />
-                </div>
-                <StartButton />
-            </aside>
-        </div>
+        <StyledTetrisWrapper>
+            <StyledTetris>
+                <Canvas canvas={createCanvas()} />
+                <aside>
+                    <div>
+                        <Display text="Rows" />
+                    </div>
+                    <StartButton />
+                </aside>
+            </StyledTetris>
+        </StyledTetrisWrapper>
     )
 }
 
