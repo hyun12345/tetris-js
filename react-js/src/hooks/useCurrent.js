@@ -14,7 +14,7 @@ export const useCurrent = () => {
     const updateCurrentPos = ({x, y, collided}) => {
         setCurrent(prev => ({
             ...prev,
-            pos:{x:(prev.pos.x += x), y:(prev.pos.y += y)},
+            pos:{x:(prev.pos.x += (x / 2)), y:(prev.pos.y += (y / 2))},
             collided,
         }));
     }

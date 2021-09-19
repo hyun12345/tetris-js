@@ -9,22 +9,6 @@ export const useCanvas = (current, resetCurrent) => {
         setRowsCleared(0);
 
         const sweepRows = newCanvas => 
-            // // array.reduce() testing
-            // let arr = [
-            //     [[0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear']],
-            //     [[0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear']],
-            //     [[0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear']],
-            //     [[0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear']],
-            //     [[0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear'], [0, 'clear']]
-            // ];
-            // arr.reduce((acc, row) => {
-            //     console.log({acc:acc});
-            //     console.log({row:row});
-            //     acc.unshift(new Array(arr[0].length).fill(['O', 'merged']));
-            //     console.log({accc:acc});
-            // });
-
-            // console.log({newCanvas:newCanvas});
             // acc : accumulator
             newCanvas.reduce((acc, row) => {
                 if (acc == undefined) {
@@ -40,9 +24,6 @@ export const useCanvas = (current, resetCurrent) => {
                 return acc;
             }, []);
         
-
-        
-
         // compare with prevCanvas
         const updateCanvas = prevCanvas => {
             // 1 : flush the canvas
@@ -61,6 +42,7 @@ export const useCanvas = (current, resetCurrent) => {
                     }
                 });
             });
+            
             // check if collided or not
             if (current.collided) {
                 resetCurrent();
