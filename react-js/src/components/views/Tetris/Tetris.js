@@ -65,13 +65,13 @@ const Tetris = () => {
     const move = (event) => {
         var bounds = event.target.getBoundingClientRect();
         var cellSize = bounds.width;
-
+    
         var canvas = document.getElementById('canvas');
         var offsetLeft = canvas.offsetLeft;
         var offsetWidth = canvas.offsetWidth;
-
+    
         var clientX = event.clientX - offsetLeft;
-
+    
         if (!gameOver) {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
                 if (cellSize < (offsetWidth / 10)) {
@@ -80,12 +80,12 @@ const Tetris = () => {
                         // console.log({currentMouse:currentMouse, current:current.pos.x});
                         // to the left
                         if (currentMouse < current.pos.x) {
-                            console.log({l_currentMouse:currentMouse, l_current:current.pos.x});
+                            // console.log({l_currentMouse:currentMouse, l_current:current.pos.x});
                             moveCurrent(-1);
-                            
+                                
                         // to the right
                         } else if (currentMouse > current.pos.x) {
-                            console.log({r_currentMouse:currentMouse, r_current:current.pos.x});
+                            // console.log({r_currentMouse:currentMouse, r_current:current.pos.x});
                             moveCurrent(1);
                         }
                     }
