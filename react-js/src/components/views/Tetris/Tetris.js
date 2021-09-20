@@ -49,9 +49,11 @@ const Tetris = () => {
             // increase speed when level increased
             setDropTime(1000 / (level + 1) + 100);
         }
-
+        
+        // not collided : to drop the block
         if (!checkCollision(current, canvas, {x:0, y:1})) {
             updateCurrentPos({x:0, y:1, collided:false});
+        // collided : game over
         } else {
             // game over
             if (current.pos.y < 1) {

@@ -7,7 +7,8 @@ export const COLORS = [
     '102, 86, 167'
 ]
 
-export const getColor = () => {
+// set random block color when start game(block has same color)
+export const setColor = () => {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
     return color;
 }
@@ -19,7 +20,7 @@ export const TETROMINOS = {
             ['O', 'O'],
             ['O', 'O'],
         ],
-        color:getColor()
+        color:setColor()
     }
 }
 
