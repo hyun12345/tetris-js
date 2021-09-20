@@ -34,7 +34,7 @@ const Tetris = () => {
     // set(reset) game
     const startGame = () => {
         setCanvas(createCanvas());
-        setDropTime(300);
+        setDropTime(1000);
         resetCurrent();
         setGameOver(false);
         setScore(0);
@@ -47,7 +47,7 @@ const Tetris = () => {
         if (rows > (level + 1) * 10) {
             setLevel(prev => prev + 1);
             // increase speed when level increased
-            setDropTime(1000 / (level + 1) + 200);
+            setDropTime(1000 / (level + 1) + 100);
         }
 
         if (!checkCollision(current, canvas, {x:0, y:1})) {
