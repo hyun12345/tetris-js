@@ -75,8 +75,8 @@ const Tetris = () => {
         if (!gameOver) {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
                 if (cellSize < (offsetWidth / 10)) {
+                    var currentMouse = Math.round(clientX / cellSize);
                     if (currentMouse !== current.pos.x) {
-                        var currentMouse = Math.round(clientX / cellSize);
                         // console.log({currentMouse:currentMouse, current:current.pos.x});
                         // to the left
                         if (currentMouse < current.pos.x) {
