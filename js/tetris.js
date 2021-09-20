@@ -3,7 +3,7 @@ const ctx = cvs.getContext('2d');
 
 const row = 20;
 const col = 10;
-const cell = 20;
+const cell = 30;
 const VACANT = 'white';
 
 const block = [
@@ -95,6 +95,7 @@ Block.prototype.moveDown = function() {
 
 // move left the block
 Block.prototype.moveLeft = function() {
+    // console.log({l_current:current, l_x:x});
     if (!this.collision(-1, 0, this.block)) {
         this.undraw();
         this.x--;
@@ -104,6 +105,7 @@ Block.prototype.moveLeft = function() {
 
 // move right the block
 Block.prototype.moveRight = function() {
+    // console.log({r_current:current, r_x:x});
     if (!this.collision(1, 0, this.block)) {
         this.undraw();
         this.x++;
@@ -176,21 +178,26 @@ Block.prototype.collision = function(x, y, block) {
 }
 
 // control the block
-document.addEventListener('mouseover', CONTROL);
+document.getElementById('tetris').addEventListener('mousemove', CONTROL);
 function CONTROL(event) {
-    if (event.clientX <= (item.x * 20) + 20) {
-        if (item.x >= 0) {
-            console.log({clientX:event.clientX})
-            console.log({itemX:item.x * 20 + 20})
-            item.moveLeft();
+    let clientX = event.clientX;
+    if (clientX >= 0 && clientX <= (cell * 10)) {
+        let current = Math.floor(clientX / cell);
+        let itemX = item.x + 1;
+
+        if (current < itemX) {
+            if (itemX >= 0) {
+                console.log({l_current:current, l_itemX:itemX});
+                item.moveLeft();
+            }
+        } else if (current > itemX) {
+            console.log({r_current:current, r_itemX:itemX});
+            if (itemX <= cell) {
+                item.moveRight();
+            }
         }
-    } else if (event.clientX >= (item.x * 20) - 20) {
-        if (item.x <= 200) {
-            console.log({clientX:event.clientX})
-            console.log({itemX:item.x * 20 - 20})
-            item.moveRight();
-        }
-    }
+    } 
+
 }
 
 // drop the block every 1sec

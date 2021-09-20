@@ -25,8 +25,6 @@ const Tetris = () => {
     const [canvas, setCanvas, rowsCleared] = useCanvas(current, resetCurrent);
     const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
 
-    console.log('re-render');
-
     const moveCurrent = (dir) => {
         if (!checkCollision(current, canvas, {x:dir, y:0})) {
             updateCurrentPos({x:dir, y:0});
@@ -49,7 +47,7 @@ const Tetris = () => {
         if (rows > (level + 1) * 10) {
             setLevel(prev => prev + 1);
             // increase speed when level increased
-            setDropTime(1000 / (level + 1) + 200);
+            setDropTime(1000 / (level + 1) + 100);
         }
 
         if (!checkCollision(current, canvas, {x:0, y:1})) {
@@ -64,28 +62,27 @@ const Tetris = () => {
         }
     }
 
-    const keyUp = ({ keyCode }) => {
-        if (!gameOver) {
-            if (keyCode === 40) {
-                setDropTime(1000);
-            }
-        }
-    }
+    const move = (event) => {
+        var bounds = event.target.getBoundingClientRect();
+        var cellSize = bounds.width;
 
-    const dropCurrent = () => {
-        setDropTime(null);
-        drop();
-    }
+        var canvas = document.getElementById('canvas');
+        var offsetLeft = canvas.offsetLeft;
 
-    // update keyCode to mouseOver later
-    const move = ({keyCode}) => {
+        var clientX = Math.floor((event.clientX - offsetLeft) / cellSize);
+        
         if (!gameOver) {
-            if (keyCode === 37) {
-                moveCurrent(-1);
-            } else if (keyCode === 39) {
-                moveCurrent(1);
-            } else if (keyCode === 40) {
-                dropCurrent();
+            if (clientX >= 0 && clientX <= (cellSize * 10)) {
+                // to the left
+                if (clientX < current.pos.x) {
+                    // console.log({l_clientX:clientX, l_current:current.pos.x});
+                    moveCurrent(-1);
+
+                // to the right
+                } else if (clientX > current.pos.x) {
+                    // console.log({r_clientX:clientX, r_current:current.pos.x});
+                    moveCurrent(1);
+                }
             }
         }
     }
@@ -95,9 +92,9 @@ const Tetris = () => {
     }, dropTime);
 
     return (
-        <StyledTetrisWrapper role="button" tabIndex="0" onKeyDown={e => move(e)} onKeyUp={keyUp}>
+        <StyledTetrisWrapper tabIndex="0">
             <StyledTetris>
-                <Canvas canvas={canvas} />
+                <Canvas id={'canvas'} canvas={canvas} callback={e => move(e)} />
                 <aside>
                     {gameOver && <Display gameOver={gameOver} text="Game Over" />}
                     <div>
