@@ -10,6 +10,7 @@ import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 import { useInterval } from '../hooks/useInterval';
 import { useCurrent } from '../hooks/useCurrent';
 import { useCanvas } from '../hooks/useCanvas';
+import { useGameStatus } from '../hooks/useGameStatus';
 
 // components
 import Canvas from './Canvas';
@@ -21,9 +22,10 @@ const Tetris = () => {
     const [gameOver, setGameOver] = useState(false);
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
-    const [canvas, setCanvas] = useCanvas(current, resetCurrent);
+    const [canvas, setCanvas, rowsCleared] = useCanvas(current, resetCurrent);
+    const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
 
-    // console.log('re-render');
+    console.log('re-render');
 
     const moveCurrent = (dir) => {
         if (!checkCollision(current, canvas, {x:dir, y:0})) {
@@ -37,9 +39,19 @@ const Tetris = () => {
         setDropTime(1000);
         resetCurrent();
         setGameOver(false);
+        setScore(0);
+        setRows(0);
+        setLevel(0);
     }
 
     const drop = () => {
+        // increate level when cleared 10 rows
+        if (rows > (level + 1) * 10) {
+            setLevel(prev => prev + 1);
+            // increase speed when level increased
+            setDropTime(1000 / (level + 1) + 200);
+        }
+
         if (!checkCollision(current, canvas, {x:0, y:1})) {
             updateCurrentPos({x:0, y:1, collided:false});
         } else {
@@ -55,14 +67,12 @@ const Tetris = () => {
     const keyUp = ({ keyCode }) => {
         if (!gameOver) {
             if (keyCode === 40) {
-                console.log('interval on')
                 setDropTime(1000);
             }
         }
     }
 
     const dropCurrent = () => {
-        console.log('interval off');
         setDropTime(null);
         drop();
     }
@@ -89,14 +99,12 @@ const Tetris = () => {
             <StyledTetris>
                 <Canvas canvas={canvas} />
                 <aside>
-                    {gameOver ? (
-                        <Display gameOver={gameOver} text="Game Over" />
-                    ): (
-                        <div>
-                            <Display text="Score" />
-                            <Display text="Rows" />
-                        </div>
-                    )}
+                    {gameOver && <Display gameOver={gameOver} text="Game Over" />}
+                    <div>
+                        <Display text={`Score: ${score}`} />
+                        <Display text={`Rows: ${rows}`} />
+                        <Display text={`Level: ${level}`} />
+                    </div>
                     <StartButton callback={startGame} />
                 </aside>
             </StyledTetris>
