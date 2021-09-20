@@ -4,27 +4,27 @@ import { TETROMINOS, setBlock } from '../tetrominos';
 
 export const useCurrent = () => {
     // set default
-    const[current, setCurrent] = useState({
-        pos: {x:0, y:0},
+    const [current, setCurrent] = useState({
+        pos: { x: 0, y: 0 },
         tetromino: TETROMINOS[0].shape,
-        collided: false
+        collided: false,
     });
     
     const updateCurrentPos = ({x, y, collided}) => {
         setCurrent(prev => ({
             ...prev,
-            pos:{x:(prev.pos.x += x), y:(prev.pos.y += y)},
+            pos: { x: (prev.pos.x += x), y: (prev.pos.y += y) },
             collided,
-        }));
+          }));
     }
 
     // reset
     const resetCurrent = useCallback(() => {
         setCurrent({
-            pos: {x:((CANVAS_WIDTH / 2) - 1), y:0},
+            pos: { x: ((CANVAS_WIDTH / 2) - 1), y: 0 },
             tetromino: setBlock().shape,
-            collided: false
-        })
+            collided: false,
+          });
     }, []);
 
     return [current, updateCurrentPos, resetCurrent];

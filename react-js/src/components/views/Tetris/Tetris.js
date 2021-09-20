@@ -25,7 +25,7 @@ const Tetris = () => {
     const [canvas, setCanvas, rowsCleared] = useCanvas(current, resetCurrent);
     const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
 
-    const moveCurrent = (dir) => {
+    const moveCurrent = dir => {
         if (!checkCollision(current, canvas, {x:dir, y:0})) {
             updateCurrentPos({x:dir, y:0});
         }
@@ -99,7 +99,7 @@ const Tetris = () => {
     }, dropTime);
 
     return (
-        <StyledTetrisWrapper tabIndex="0">
+        <StyledTetrisWrapper role="button" tabIndex="0">
             <StyledTetris>
                 <Canvas id={'canvas'} canvas={canvas} callback={e => move(e)} />
                 <aside>

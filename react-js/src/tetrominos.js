@@ -24,6 +24,5 @@ export const TETROMINOS = {
 }
 
 export const setBlock = () => {
-    TETROMINOS['O'].color = getColor();
-    return TETROMINOS['O']
+    return TETROMINOS['O'];
 }

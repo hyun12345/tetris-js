@@ -24,4 +24,5 @@ export const checkCollision = (current, canvas, {x:moveX, y:moveY}) => {
             }
         }
     }
+    return false;
 }
