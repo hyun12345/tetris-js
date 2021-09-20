@@ -34,7 +34,7 @@ const Tetris = () => {
     // set(reset) game
     const startGame = () => {
         setCanvas(createCanvas());
-        setDropTime(1000);
+        setDropTime(300);
         resetCurrent();
         setGameOver(false);
         setScore(0);
@@ -61,32 +61,6 @@ const Tetris = () => {
             updateCurrentPos({x:0, y:0, collided:true});
         }
     }
-
-    // const keyUp = ({ keyCode }) => {
-    //     if (!gameOver) {
-    //         if (keyCode === 40) {
-    //             setDropTime(1000);
-    //         }
-    //     }
-    // }
-
-    const dropCurrent = () => {
-        setDropTime(null);
-        drop();
-    }
-
-    // // update keyCode to mouseOver later
-    // const keyMove = ({keyCode}) => {
-    //     if (!gameOver) {
-    //         if (keyCode === 37) {
-    //             moveCurrent(-1);
-    //         } else if (keyCode === 39) {
-    //             moveCurrent(1);
-    //         } else if (keyCode === 40) {
-    //             dropCurrent();
-    //         }
-    //     }
-    // }
 
     const move = (event) => {
         var bounds = event.target.getBoundingClientRect();
@@ -118,7 +92,6 @@ const Tetris = () => {
     }, dropTime);
 
     return (
-        // <StyledTetrisWrapper role="button" tabIndex="0" onKeyDown={e => keyMove(e)} onKeyUp={keyUp}>
         <StyledTetrisWrapper tabIndex="0">
             <StyledTetris>
                 <Canvas id={'canvas'} canvas={canvas} callback={e => move(e)} />
