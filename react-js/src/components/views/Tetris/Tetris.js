@@ -7,15 +7,15 @@ import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 
 // custom hooks
 // useInterval hooks from https://overreacted.io/making-setinterval-declarative-with-react-hooks/
-import { useInterval } from '../hooks/useInterval';
-import { useCurrent } from '../hooks/useCurrent';
-import { useCanvas } from '../hooks/useCanvas';
-import { useGameStatus } from '../hooks/useGameStatus';
+import { useInterval } from '../_hooks/useInterval';
+import { useCurrent } from '../_hooks/useCurrent';
+import { useCanvas } from '../_hooks/useCanvas';
+import { useGameStatus } from '../_hooks/useGameStatus';
 
 // components
-import Canvas from './Canvas';
-import Display from './Display';
-import StartButton from './StartButton';
+import Canvas from '../Canvas/Canvas';
+import Display from '../Display/Display';
+import StartButton from '../StartButton/StartButton';
 
 const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);

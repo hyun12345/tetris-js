@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyledCanvas } from './styles/StyledCanvas';
-import Cell from './Cell';
+import { StyledCanvas } from '../../styles/StyledCanvas';
+import Cell from '../Cell/Cell';
 
 const Canvas = ({id, canvas, callback}) => (
     <StyledCanvas id={id} width={canvas[0].length} height={canvas.length} onMouseMove={callback}>
