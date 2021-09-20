@@ -7,7 +7,7 @@ export const COLORS = [
     '102, 86, 167'
 ]
 
-export const randomColor = () => {
+export const getColor = () => {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
     return color;
 }
@@ -19,11 +19,11 @@ export const TETROMINOS = {
             ['O', 'O'],
             ['O', 'O'],
         ],
-        color:randomColor()
+        color:getColor()
     }
 }
 
 export const setBlock = () => {
-    TETROMINOS['O'].color = randomColor();
+    TETROMINOS['O'].color = getColor();
     return TETROMINOS['O']
 }
