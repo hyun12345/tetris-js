@@ -68,20 +68,27 @@ const Tetris = () => {
 
         var canvas = document.getElementById('canvas');
         var offsetLeft = canvas.offsetLeft;
+        var offsetWidth = canvas.offsetWidth;
 
-        var clientX = Math.floor((event.clientX - offsetLeft) / cellSize);
-        
+        var clientX = event.clientX - offsetLeft;
+
         if (!gameOver) {
-            if (clientX >= 0 && clientX <= (cellSize * 10)) {
-                // to the left
-                if (clientX < current.pos.x) {
-                    // console.log({l_clientX:clientX, l_current:current.pos.x});
-                    moveCurrent(-1);
-
-                // to the right
-                } else if (clientX > current.pos.x) {
-                    // console.log({r_clientX:clientX, r_current:current.pos.x});
-                    moveCurrent(1);
+            if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
+                if (cellSize < (offsetWidth / 10)) {
+                    if (currentMouse !== current.pos.x) {
+                        var currentMouse = Math.round(clientX / cellSize);
+                        // console.log({currentMouse:currentMouse, current:current.pos.x});
+                        // to the left
+                        if (currentMouse < current.pos.x) {
+                            console.log({l_currentMouse:currentMouse, l_current:current.pos.x});
+                            moveCurrent(-1);
+                            
+                        // to the right
+                        } else if (currentMouse > current.pos.x) {
+                            console.log({r_currentMouse:currentMouse, r_current:current.pos.x});
+                            moveCurrent(1);
+                        }
+                    }
                 }
             }
         }

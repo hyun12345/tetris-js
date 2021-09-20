@@ -9,7 +9,6 @@ export const useCurrent = () => {
         tetromino: TETROMINOS[0].shape,
         collided: false
     });
-
     
     const updateCurrentPos = ({x, y, collided}) => {
         setCurrent(prev => ({
