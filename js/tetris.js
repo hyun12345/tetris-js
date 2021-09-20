@@ -185,19 +185,20 @@ function CONTROL(event) {
         let current = Math.floor(clientX / cell);
         let itemX = item.x + 1;
 
-        if (current < itemX) {
-            if (itemX >= 0) {
-                console.log({l_current:current, l_itemX:itemX});
-                item.moveLeft();
-            }
-        } else if (current > itemX) {
-            console.log({r_current:current, r_itemX:itemX});
-            if (itemX <= cell) {
-                item.moveRight();
+        if (current !== itemX) {
+            if (current < itemX) {
+                if (itemX >= 0) {
+                    console.log({l_current:current, l_itemX:itemX});
+                    item.moveLeft();
+                }
+            } else if (current > itemX) {
+                console.log({r_current:current, r_itemX:itemX});
+                if (itemX <= cell) {
+                    item.moveRight();
+                }
             }
         }
     } 
-
 }
 
 // drop the block every 1sec

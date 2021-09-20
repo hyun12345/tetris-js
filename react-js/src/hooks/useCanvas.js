@@ -32,10 +32,7 @@ export const useCanvas = (current, resetCurrent) => {
             current.tetromino.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
-                        newCanvas[y + current.pos.y][x + current.pos.x] = [
-                            value,
-                            `${current.collided ? 'merged' : 'clear'}`,
-                        ]
+                        newCanvas[y + current.pos.y][x + current.pos.x] = [value, `${current.collided ? 'merged' : 'clear'}`];
                     }
                 });
             });
