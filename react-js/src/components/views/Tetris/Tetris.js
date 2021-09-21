@@ -10,7 +10,7 @@ import { StyledTetrisWrapper, StyledTetris } from '../../styles/StyledTetris';
 import { useInterval } from '../../../_hooks/useInterval';
 import { useCurrent } from '../../../_hooks/useCurrent';
 import { useCanvas } from '../../../_hooks/useCanvas';
-import { useGameStatus } from '../../../_hooks/useGameStatus';
+import { useGameValues } from '../../../_hooks/useGameValues';
 
 // components
 import Canvas from '../Canvas/Canvas';
@@ -23,7 +23,7 @@ const Tetris = () => {
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
     const [canvas, setCanvas, rowsCleared] = useCanvas(current, resetCurrent);
-    const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
+    const [score, setScore, rows, setRows, level, setLevel] = useGameValues(rowsCleared);
 
     const moveCurrent = dir => {
         if (!checkCollision(current, canvas, {x:dir, y:0})) {
@@ -34,7 +34,7 @@ const Tetris = () => {
     // set(reset) game
     const startGame = () => {
         setCanvas(createCanvas());
-        setDropTime(1000);
+        setDropTime(100);
         resetCurrent();
         setGameOver(false);
         setScore(0);
@@ -47,7 +47,7 @@ const Tetris = () => {
         if (rows > (level + 1) * 10) {
             setLevel(prev => prev + 1);
             /// increase speed when level increased
-            setDropTime(1000 / (level + 1) + 100);
+            setDropTime(dropTime / (level + 1) + (dropTime / 10));
         }
         
         // not collided : to drop the block
@@ -108,9 +108,9 @@ const Tetris = () => {
                 <aside>
                     {gameOver && <Display gameOver={gameOver} text="Game Over" />}
                     <div>
-                        <Display text={`Score: ${score}`} />
-                        <Display text={`rows: ${rows}`} />
-                        <Display text={`Level: ${level}`} />
+                        <Display text={gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
+                        <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
+                        <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
                     </div>
                     <StartButton callback={startGame} />
                 </aside>
