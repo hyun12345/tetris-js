@@ -15,7 +15,7 @@ import { useGameValues } from '../../../_hooks/useGameValues';
 // components
 import Board from '../Board/Board';
 import Display from '../Display/Display';
-import StartButton from '../StartButton/StartButton';
+import Button from '../Button/Button';
 
 const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);
@@ -119,7 +119,7 @@ const Tetris = () => {
                         <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
                         <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
                     </div>
-                    <StartButton callback={startGame} text={buttonTitle} />
+                    <Button callback={startGame} text={buttonTitle} />
                     <Display text={guide} />
                 </aside>
             </StyledTetris>
