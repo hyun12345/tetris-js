@@ -118,7 +118,7 @@ const Tetris = () => {
             {isIE && <StyledTetrisAlertContainer>
                 {!closeAlert && <Alert isIE={isIE} text={`Open Chrome / Safari / Edge`} callBack={closeBtn} buttonTitle={'OK'} />}
             </StyledTetrisAlertContainer>}
-            <StyledTetrisTitle>BLOCK-TETRIS</StyledTetrisTitle>
+            {/* <StyledTetrisTitle>BLOCK-TETRIS</StyledTetrisTitle> */}
             <StyledTetris>
                 <Board id={'board'} board={board} callback={e => move(e)}/>
                 <aside>
