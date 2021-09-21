@@ -7,6 +7,14 @@ export const StyledTetrisWrapper = styled.div`
     overflow: hidden;
 `;
 
+export const StyledTetrisAlertContainer = styled.div`
+    width: 30%;
+    height: 100%;
+    position: absolute;
+    top: 30vh;
+    left: 35vw;
+`;
+
 export const StyledTetrisTitle = styled.div`
     display: flex;
     justify-content: center;

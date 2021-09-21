@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { createBoard } from '../settingGame';
+import { createBoard, checkIsIE, checkCloseAlert} from '../settingGame';
 
 export const useBoard = (current, resetCurrent) => {
     const [board, setBoard] = useState(createBoard());
     const [rowsCleared, setRowsCleared] = useState(0);
+    const [isIE, setIsIE] = useState(checkIsIE());
+    const [closeAlert, setCloseAlert] = useState(checkCloseAlert());
 
     useEffect(() => {
         setRowsCleared(0);
@@ -47,7 +49,9 @@ export const useBoard = (current, resetCurrent) => {
           };
 
           setBoard(prev => updateBoard(prev));
+          setIsIE(checkIsIE());
+          setCloseAlert(checkCloseAlert());
       }, [current, resetCurrent,]);
 
-      return [board, setBoard, rowsCleared];
+      return [board, setBoard, rowsCleared, isIE, closeAlert, setCloseAlert];
 };

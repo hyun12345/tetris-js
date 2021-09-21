@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { BOARD_WIDTH, createBoard, checkCollision } from '../../../settingGame';
 
 // styled-components
-import { StyledTetrisWrapper, StyledTetrisTitle, StyledTetris } from '../../styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetrisTitle, StyledTetris } from '../../styles/StyledTetris';
 
 // custom hooks
 // useInterval hooks from https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -13,6 +13,7 @@ import { useBoard } from '../../../_hooks/useBoard';
 import { useGameValues } from '../../../_hooks/useGameValues';
 
 // components
+import Alert from '../Alert/Alert';
 import Board from '../Board/Board';
 import Display from '../Display/Display';
 import Button from '../Button/Button';
@@ -24,8 +25,13 @@ const Tetris = () => {
     const [guide, setGuide] = useState(buttonTitle);
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
-    const [board, setBoard, rowsCleared] = useBoard(current, resetCurrent);
+    const [board, setBoard, rowsCleared, isIE, closeAlert, setCloseAlert] = useBoard(current, resetCurrent);
     const [score, setScore, rows, setRows, level, setLevel] = useGameValues(rowsCleared);
+
+    const closeBtn = () => {
+        console.log('closeBtn clicked');
+        setCloseAlert(false);
+    }
 
     const moveCurrent = dir => {
         if (!checkCollision(current, board, {x:dir, y:0})) {
@@ -109,6 +115,9 @@ const Tetris = () => {
 
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
+            {isIE && <StyledTetrisAlertContainer>
+                {!closeAlert && <Alert isIE={isIE} text={`Open Chrome / Safari / Edge`} callBack={closeBtn} buttonTitle={'OK'} />}
+            </StyledTetrisAlertContainer>}
             <StyledTetrisTitle>BLOCK-TETRIS</StyledTetrisTitle>
             <StyledTetris>
                 <Board id={'board'} board={board} callback={e => move(e)}/>
@@ -119,8 +128,8 @@ const Tetris = () => {
                         <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
                         <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
                     </div>
-                    <Button callback={startGame} text={buttonTitle} />
-                    <Display text={guide} />
+                    {!isIE &&<Button callback={startGame} title={buttonTitle} />}
+                    {!isIE && <Display text={guide} />}
                 </aside>
             </StyledTetris>
         </StyledTetrisWrapper>

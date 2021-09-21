@@ -25,3 +25,16 @@ export const checkCollision = (current, board, {x:moveX, y:moveY}) => {
     // if collided return false
     return false;
 };
+
+// check if current browser is IE
+export const checkIsIE = () => {
+    return !!(document).documentMode;
+};
+
+export const checkCloseAlert = () => {
+    if (checkIsIE()) {
+        return false;
+    } else {
+        return true;
+    }
+}
