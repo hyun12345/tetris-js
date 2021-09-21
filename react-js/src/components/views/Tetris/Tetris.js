@@ -29,8 +29,8 @@ const Tetris = () => {
         if (!checkCollision(current, canvas, {x:dir, y:0})) {
             updateCurrentPos({x:dir, y:0});
         }
-    }
-    
+    };
+
     // set(reset) game
     const startGame = () => {
         setCanvas(createCanvas());
@@ -40,19 +40,20 @@ const Tetris = () => {
         setScore(0);
         setRows(0);
         setLevel(0);
-    }
+    };
 
     const drop = () => {
         // increate level when cleared 10 rows
         if (rows > (level + 1) * 10) {
             setLevel(prev => prev + 1);
-            // increase speed when level increased
+            /// increase speed when level increased
             setDropTime(1000 / (level + 1) + 100);
         }
         
         // not collided : to drop the block
         if (!checkCollision(current, canvas, {x:0, y:1})) {
-            updateCurrentPos({x:0, y:1, collided:false});
+            updateCurrentPos({x:0, y:1, collided: false});
+        
         // collided : game over
         } else {
             // game over
@@ -62,18 +63,18 @@ const Tetris = () => {
             }
             updateCurrentPos({x:0, y:0, collided:true});
         }
-    }
+    };
 
     const move = (event) => {
         var bounds = event.target.getBoundingClientRect();
         var cellSize = bounds.width;
-    
+
         var canvas = document.getElementById('canvas');
         var offsetLeft = canvas.offsetLeft;
         var offsetWidth = canvas.offsetWidth;
-    
+
         var clientX = event.clientX - offsetLeft;
-    
+
         if (!gameOver) {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
                 if (cellSize < (offsetWidth / 10)) {
@@ -84,7 +85,7 @@ const Tetris = () => {
                         if (currentMouse < current.pos.x) {
                             // console.log({l_currentMouse:currentMouse, l_current:current.pos.x});
                             moveCurrent(-1);
-                                
+                            
                         // to the right
                         } else if (currentMouse > current.pos.x) {
                             // console.log({r_currentMouse:currentMouse, r_current:current.pos.x});
@@ -103,19 +104,19 @@ const Tetris = () => {
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
             <StyledTetris>
-                <Canvas id={'canvas'} canvas={canvas} callback={e => move(e)} />
+                <Canvas id={'canvas'} canvas={canvas} callback={e => move(e)}/>
                 <aside>
                     {gameOver && <Display gameOver={gameOver} text="Game Over" />}
                     <div>
                         <Display text={`Score: ${score}`} />
-                        <Display text={`Rows: ${rows}`} />
+                        <Display text={`rows: ${rows}`} />
                         <Display text={`Level: ${level}`} />
                     </div>
                     <StartButton callback={startGame} />
                 </aside>
             </StyledTetris>
         </StyledTetrisWrapper>
-    )
-}
+    );
+};
 
 export default Tetris;

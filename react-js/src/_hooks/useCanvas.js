@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
 import { createCanvas } from '../settingGame';
 
-export const useCanvas = (current, resetCurrent) => {
-    const[canvas, setCanvas] = useState(createCanvas());
+export const useCanvas = (current, resetPlayer) => {
+    const [canvas, setCanvas] = useState(createCanvas());
     const [rowsCleared, setRowsCleared] = useState(0);
 
     useEffect(() => {
         setRowsCleared(0);
-        const sweepRows = newCanvas => 
+        const sweepRows = newCanvas =>
             // acc : accumulator
             newCanvas.reduce((acc, row) => {
                 if (row.findIndex(cell => cell[0] === 0) === -1) {
-                  setRowsCleared(prev => prev + 1);
-                  acc.unshift(new Array(newCanvas[0].length).fill([0, 'clear']));
-                  return acc;
+                    setRowsCleared(prev => prev + 1);
+                    acc.unshift(new Array(newCanvas[0].length).fill([0, 'clear']));
+                    return acc;
                 }
                 acc.push(row);
                 return acc;
             }, []);
-        
+
         // compare with prevCanvas
         const updateCanvas = prevCanvas => {
             // 1 : flush the canvas
@@ -37,14 +37,14 @@ export const useCanvas = (current, resetCurrent) => {
             
             // check if collided or not
             if (current.collided) {
-                resetCurrent();
+                resetPlayer();
                 return sweepRows(newCanvas);
             }
             return newCanvas;
-        };
+          };
 
-        setCanvas(prev => updateCanvas(prev));
-    }, [current, resetCurrent]);
+          setCanvas(prev => updateCanvas(prev));
+      }, [current, resetPlayer,]);
 
-    return [canvas, setCanvas, rowsCleared];
-}
+      return [canvas, setCanvas, rowsCleared];
+};

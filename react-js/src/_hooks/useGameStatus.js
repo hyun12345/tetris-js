@@ -4,11 +4,12 @@ export const useGameStatus = rowsCleared => {
     const [score, setScore] = useState(0);
     const [rows, setRows] = useState(0);
     const [level, setLevel] = useState(0);
-    
+
     // original tetris game score
     const linePoints = useMemo(() => {
         return [40, 100, 300, 1200];
     }, []);
+
 
     const calcScore = useCallback(() => {
         // if have score
@@ -24,5 +25,5 @@ export const useGameStatus = rowsCleared => {
     }, [calcScore, rowsCleared, score]);
 
     // return set-- for restarting game
-    return [score, setScore, rows, setRows, level, setLevel]
-}
+    return [score, setScore, rows, setRows, level, setLevel];
+};
