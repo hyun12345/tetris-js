@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createCanvas } from '../settingGame';
 
-export const useCanvas = (current, resetPlayer) => {
+export const useCanvas = (current, resetCurrent) => {
     const [canvas, setCanvas] = useState(createCanvas());
     const [rowsCleared, setRowsCleared] = useState(0);
 
@@ -37,14 +37,17 @@ export const useCanvas = (current, resetPlayer) => {
             
             // check if collided or not
             if (current.collided) {
-                resetPlayer();
-                return sweepRows(newCanvas);
+                // if last block not touched the top
+                if (current.pos.y > 0) {
+                    resetCurrent();
+                    return sweepRows(newCanvas);
+                }
             }
             return newCanvas;
           };
 
           setCanvas(prev => updateCanvas(prev));
-      }, [current, resetPlayer,]);
+      }, [current, resetCurrent,]);
 
       return [canvas, setCanvas, rowsCleared];
 };

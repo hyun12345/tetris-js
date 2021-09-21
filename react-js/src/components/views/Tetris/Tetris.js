@@ -58,6 +58,7 @@ const Tetris = () => {
         } else {
             // game over
             if (current.pos.y < 1) {
+                console.log('gameOver');
                 setGameOver(true);
                 setDropTime(null);
             }
@@ -66,11 +67,14 @@ const Tetris = () => {
     };
 
     const move = (event) => {
+        // to get each cell size
         var bounds = event.target.getBoundingClientRect();
         var cellSize = bounds.width;
 
         var canvas = document.getElementById('canvas');
+        // value of margin-left + padding-left from canvas
         var offsetLeft = canvas.offsetLeft;
+        // to get canvas area
         var offsetWidth = canvas.offsetWidth;
 
         var clientX = event.clientX - offsetLeft;
@@ -80,15 +84,12 @@ const Tetris = () => {
                 if (cellSize < (offsetWidth / 10)) {
                     var currentMouse = Math.round(clientX / cellSize);
                     if (currentMouse !== current.pos.x) {
-                        // console.log({currentMouse:currentMouse, current:current.pos.x});
                         // to the left
                         if (currentMouse < current.pos.x) {
-                            // console.log({l_currentMouse:currentMouse, l_current:current.pos.x});
                             moveCurrent(-1);
                             
                         // to the right
                         } else if (currentMouse > current.pos.x) {
-                            // console.log({r_currentMouse:currentMouse, r_current:current.pos.x});
                             moveCurrent(1);
                         }
                     }
