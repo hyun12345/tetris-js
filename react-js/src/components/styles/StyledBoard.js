@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledCanvas = styled.div`
+export const StyledBoard = styled.div`
     display: grid;
     grid-template-rows: repeat(
         ${props => props.height},

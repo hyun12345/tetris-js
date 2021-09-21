@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
-import { CANVAS_WIDTH } from '../settingGame';
+import { BOARD_WIDTH } from '../settingGame';
 import { TETROMINOS, setBlock } from '../tetrominos';
 
 export const useCurrent = () => {
-    // set default(canvas)
+    // set default(board)
     const [current, setCurrent] = useState({
         pos: { x: 0, y: 0 },
         tetromino: TETROMINOS[0].shape,
@@ -21,8 +21,8 @@ export const useCurrent = () => {
     // reset
     const resetCurrent = useCallback(() => {
         setCurrent({
-            // x result : set block position center of the canvas
-            pos: { x: ((CANVAS_WIDTH / 2) - 1), y: 0 },
+            // x result : set block position center of the board
+            pos: { x: ((BOARD_WIDTH / 2) - 1), y: 0 },
             tetromino: setBlock().shape,
             collided: false,
         });
