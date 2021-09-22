@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { BOARD_WIDTH, createBoard, checkCollision } from '../../../settingGame';
 
 // styled-components
-// import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetrisTitle, StyledTetris } from '../../styles/StyledTetris';
 import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetris } from '../../styles/StyledTetris';
 
 // custom hooks
@@ -23,7 +22,6 @@ const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);
     const [gameOver, setGameOver] = useState(false);
     const [buttonTitle, setButtonTitle] = useState('Start Game');
-    // const [guide, setGuide] = useState(buttonTitle);
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
     const [board, setBoard, rowsCleared, isIE, closeAlert, setCloseAlert] = useBoard(current, resetCurrent);
@@ -51,7 +49,6 @@ const Tetris = () => {
         setRows(0);
         setLevel(0);
         setButtonTitle('Re-Start Game');
-        // setGuide('Move Mouse on the board to the LEFT or RIGHT for moving block!');
     };
 
     const drop = () => {
@@ -73,7 +70,6 @@ const Tetris = () => {
                 console.log('gameOver');
                 setGameOver(true);
                 setDropTime(null);
-                // setGuide(buttonTitle);
             }
             updateCurrentPos({x:0, y:0, collided:true});
         }
@@ -127,7 +123,6 @@ const Tetris = () => {
                     />
                 }
             </StyledTetrisAlertContainer>}
-            {/* <StyledTetrisTitle>BLOCK-TETRIS</StyledTetrisTitle> */}
             <StyledTetris>
                 <Board id={'board'} board={board} callback={e => move(e)}/>
                 <aside>

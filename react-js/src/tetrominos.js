@@ -7,7 +7,7 @@ export const COLORS = [
     '102, 86, 167'
 ];
 
-// set random block color when start game(block has same color)
+// set random block color when refresh page(block has same color)
 export const setColor = () => {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
     return color;
