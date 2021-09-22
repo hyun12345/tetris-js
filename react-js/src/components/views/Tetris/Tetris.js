@@ -29,11 +29,10 @@ const Tetris = () => {
     const [board, setBoard, rowsCleared, isIE, closeAlert, setCloseAlert] = useBoard(current, resetCurrent);
     const [score, setScore, rows, setRows, level, setLevel] = useGameValues(rowsCleared);
 
-    const closeBtn = () => {
-        console.log('closeBtn clicked');
-        if (!closeAlert) {
-            setCloseAlert(!closeAlert);
-        }
+    const setBrowserAlert = () => {
+        console.log('setBrowserAlert clicked');
+        console.log({closeAlert:closeAlert});
+        setCloseAlert(!closeAlert);
     }
 
     const moveCurrent = dir => {
@@ -96,14 +95,14 @@ const Tetris = () => {
         if (!gameOver) {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
                 if (cellSize < (offsetWidth / BOARD_WIDTH)) {
-                    var currentMouse = Math.round(clientX / cellSize);
-                    if (currentMouse !== current.pos.x) {
+                    var mouseX = Math.round(clientX / cellSize);
+                    if (mouseX !== current.pos.x) {
                         // to the left
-                        if (currentMouse < current.pos.x) {
+                        if (mouseX < current.pos.x) {
                             moveCurrent(-1);
                             
                         // to the right
-                        } else if (currentMouse > current.pos.x) {
+                        } else if (mouseX > current.pos.x) {
                             moveCurrent(1);
                         }
                     }
@@ -119,18 +118,15 @@ const Tetris = () => {
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
             {/* alert for IE browser user */}
-            {/* {isIE && <StyledTetrisAlertContainer>
+            {isIE && <StyledTetrisAlertContainer>
                 {!closeAlert && 
                     <Alert isIE={isIE} 
-                            text={`Block-Tetris is not working in IE.`} 
-                            callback={closeBtn} 
+                            text={`Not working in IE. Try another browser.`} 
+                            callback={setBrowserAlert} 
                             buttonTitle={'OK'} 
                     />
                 }
-            </StyledTetrisAlertContainer>} */}
-            <StyledTetrisAlertContainer>
-                {!closeAlert && <Alert id={'alert'} isIE={isIE} text={`Block-Tetris is not working in IE.`} callback={closeBtn} buttonTitle={'OK'} />}
-            </StyledTetrisAlertContainer>
+            </StyledTetrisAlertContainer>}
             {/* <StyledTetrisTitle>BLOCK-TETRIS</StyledTetrisTitle> */}
             <StyledTetris>
                 <Board id={'board'} board={board} callback={e => move(e)}/>
@@ -141,10 +137,11 @@ const Tetris = () => {
                         <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
                         <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
                     </div>
-                    {/* not showing in IE browser to prevent starting game*/}
+                    {/* not showing in IE browser*/}
                     {!isIE &&<Button callback={startGame} title={buttonTitle} />}
-                    {/* not showing in IE browser because it's not needed */}
                     {!isIE && <Display text={guide} />}
+                    {/* only showing in IE browser */}
+                    {(isIE && closeAlert) &&<Button callback={setBrowserAlert} title={buttonTitle} />}
                 </aside>
             </StyledTetris>
         </StyledTetrisWrapper>
