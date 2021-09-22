@@ -12,6 +12,11 @@ export const StyledTetrisAlertContainer = styled.div`
     position: fixed;
     top: 30%;
     left: 35%;
+
+    // mobile size
+    @media screen and (max-width: 600px) {
+        left: 15%;
+    }
 `;
 
 export const StyledTetrisTitle = styled.div`
@@ -37,5 +42,10 @@ export const StyledTetris = styled.div`
         max-width: 200px;
         display: block;
         padding: 0 20px;
+    }
+
+    // mobile size
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
     }
 `;

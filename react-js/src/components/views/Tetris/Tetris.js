@@ -23,7 +23,7 @@ const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);
     const [gameOver, setGameOver] = useState(false);
     const [buttonTitle, setButtonTitle] = useState('Start Game');
-    const [guide, setGuide] = useState(buttonTitle);
+    // const [guide, setGuide] = useState(buttonTitle);
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
     const [board, setBoard, rowsCleared, isIE, closeAlert, setCloseAlert] = useBoard(current, resetCurrent);
@@ -51,7 +51,7 @@ const Tetris = () => {
         setRows(0);
         setLevel(0);
         setButtonTitle('Re-Start Game');
-        setGuide('Move Mouse on the board to the LEFT or RIGHT for moving block!');
+        // setGuide('Move Mouse on the board to the LEFT or RIGHT for moving block!');
     };
 
     const drop = () => {
@@ -73,7 +73,7 @@ const Tetris = () => {
                 console.log('gameOver');
                 setGameOver(true);
                 setDropTime(null);
-                setGuide(buttonTitle);
+                // setGuide(buttonTitle);
             }
             updateCurrentPos({x:0, y:0, collided:true});
         }
@@ -132,14 +132,15 @@ const Tetris = () => {
                 <Board id={'board'} board={board} callback={e => move(e)}/>
                 <aside>
                     {gameOver && <Display gameOver={gameOver} text="Game Over" />}
-                    <React.Fragment>
-                        <Display text={gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
-                        <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
-                        <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
-                    </React.Fragment>
                     {/* not showing in IE browser*/}
-                    {!isIE &&<Button callback={startGame} title={buttonTitle} />}
-                    {!isIE && <Display text={guide} />}
+                    {!isIE &&
+                        <React.Fragment>
+                            <Button callback={startGame} title={buttonTitle} />
+                            <Display text={gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
+                            <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
+                            <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
+                        </React.Fragment>
+                    }
                     {/* only showing in IE browser */}
                     {(isIE && closeAlert) &&<Button callback={setBrowserAlert} title={buttonTitle} />}
                 </aside>

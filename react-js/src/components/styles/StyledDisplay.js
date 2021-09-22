@@ -19,4 +19,10 @@ export const StyledDisplay = styled.div`
     font-size: ${props => (props.isIE ? '1.5rem' : '0.8rem')};
     word-break: keep-all;
     word-wrap: keep-all;
+
+    // mobile size
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        font-size: 1rem;
+    }
 `;
