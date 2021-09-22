@@ -31,7 +31,7 @@ export const checkIsIE = () => {
     return !!(document).documentMode;
 };
 
-export const checkCloseAlert = () => {
+export const closeIEAlert = () => {
     if (checkIsIE()) {
         return false;
     } else {

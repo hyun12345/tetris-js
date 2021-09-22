@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+// using react-redux
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../../_actions/index';
 
 import { BOARD_WIDTH, createBoard, checkCollision } from '../../../settingGame';
 
@@ -19,18 +23,17 @@ import Display from '../Display/Display';
 import Button from '../Button/Button';
 
 const Tetris = () => {
-    const [dropTime, setDropTime] = useState(null);
-    const [gameOver, setGameOver] = useState(false);
-    const [buttonTitle, setButtonTitle] = useState('Start Game');
+    const dispatch = useDispatch();
+    const tetris = useSelector((store) => store.tetris);
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
-    const [board, setBoard, rowsCleared, isIE, closeAlert, setCloseAlert] = useBoard(current, resetCurrent);
+    const [board, setBoard, rowsCleared] = useBoard(current, resetCurrent);
     const [score, setScore, rows, setRows, level, setLevel] = useGameValues(rowsCleared);
 
     const setBrowserAlert = () => {
-        console.log('setBrowserAlert clicked');
-        console.log({closeAlert:closeAlert});
-        setCloseAlert(!closeAlert);
+        console.log('setAlert clicked');
+        console.log({closeIEAlert:tetris.closeIEAlert});
+        dispatch(actions.setCloseIEAlert(!tetris.closeIEAlert));
     }
 
     const moveCurrent = dir => {
@@ -42,13 +45,13 @@ const Tetris = () => {
     // set(reset) game
     const startGame = () => {
         setBoard(createBoard());
-        setDropTime(100);
         resetCurrent();
-        setGameOver(false);
         setScore(0);
         setRows(0);
         setLevel(0);
-        setButtonTitle('Re-Start Game');
+        dispatch(actions.setDropTime(1000));
+        dispatch(actions.setGameOver(false));
+        dispatch(actions.setBtnTitle('Re-Start Game'));
     };
 
     const drop = () => {
@@ -56,7 +59,7 @@ const Tetris = () => {
         if (rows > (level + 1) * 10) {
             setLevel(prev => prev + 1);
             /// increase speed when level increased
-            setDropTime(dropTime / (level + 1) + 100);
+            dispatch(actions.setDropTime(tetris.dropTime / (level + 1) + 100));
         }
         
         // not collided : to drop the block
@@ -68,8 +71,9 @@ const Tetris = () => {
             // game over
             if (current.pos.y < 1) {
                 console.log('gameOver');
-                setGameOver(true);
-                setDropTime(null);
+                dispatch(actions.setGameOver(true));
+                dispatch(actions.setDropTime(null));
+
             }
             updateCurrentPos({x:0, y:0, collided:true});
         }
@@ -88,7 +92,7 @@ const Tetris = () => {
 
         var clientX = event.clientX - offsetLeft;
 
-        if (!gameOver) {
+        if (!tetris.gameOver) {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
                 if (cellSize < (offsetWidth / BOARD_WIDTH)) {
                     var mouseX = Math.round(clientX / cellSize);
@@ -109,14 +113,14 @@ const Tetris = () => {
 
     useInterval(() => {
         drop();
-    }, dropTime);
+    }, tetris.dropTime);
 
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
             {/* alert for IE browser user */}
-            {isIE && <StyledTetrisAlertContainer>
-                {!closeAlert && 
-                    <Alert  isIE={isIE}
+            {tetris.isIE && <StyledTetrisAlertContainer>
+                {!tetris.closeIEAlert && 
+                    <Alert  isIE={tetris.isIE}
                             text={'Not working in IE. Try another browser.'} 
                             callback={setBrowserAlert} 
                             buttonTitle={'OK'} 
@@ -126,18 +130,18 @@ const Tetris = () => {
             <StyledTetris>
                 <Board id={'board'} board={board} callback={e => move(e)}/>
                 <aside>
-                    {gameOver && <Display gameOver={gameOver} text="Game Over" />}
+                    {tetris.gameOver && <Display gameOver={tetris.gameOver} text="Game Over" />}
                     {/* not showing in IE browser*/}
-                    {!isIE &&
+                    {!tetris.isIE &&
                         <React.Fragment>
-                            <Button callback={startGame} title={buttonTitle} />
-                            <Display text={gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
-                            <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
-                            <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
+                            <Button callback={startGame} title={tetris.btnTitle} />
+                            <Display text={tetris.gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
+                            <Display text={tetris.gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
+                            <Display text={tetris.gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
                         </React.Fragment>
                     }
                     {/* only showing in IE browser */}
-                    {(isIE && closeAlert) &&<Button callback={setBrowserAlert} title={buttonTitle} />}
+                    {(tetris.isIE && tetris.closeIEAlert) &&<Button callback={setBrowserAlert} title={tetris.btnTitle} />}
                 </aside>
             </StyledTetris>
         </StyledTetrisWrapper>
