@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { BOARD_WIDTH, createBoard, checkCollision } from '../../../settingGame';
 
 // styled-components
-import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetrisTitle, StyledTetris } from '../../styles/StyledTetris';
+// import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetrisTitle, StyledTetris } from '../../styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetris } from '../../styles/StyledTetris';
 
 // custom hooks
 // useInterval hooks from https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -30,7 +31,9 @@ const Tetris = () => {
 
     const closeBtn = () => {
         console.log('closeBtn clicked');
-        setCloseAlert(false);
+        if (!closeAlert) {
+            setCloseAlert(!closeAlert);
+        }
     }
 
     const moveCurrent = dir => {
@@ -115,9 +118,19 @@ const Tetris = () => {
 
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
-            {isIE && <StyledTetrisAlertContainer>
-                {!closeAlert && <Alert isIE={isIE} text={`Open Chrome / Safari / Edge`} callBack={closeBtn} buttonTitle={'OK'} />}
-            </StyledTetrisAlertContainer>}
+            {/* alert for IE browser user */}
+            {/* {isIE && <StyledTetrisAlertContainer>
+                {!closeAlert && 
+                    <Alert isIE={isIE} 
+                            text={`Block-Tetris is not working in IE.`} 
+                            callback={closeBtn} 
+                            buttonTitle={'OK'} 
+                    />
+                }
+            </StyledTetrisAlertContainer>} */}
+            <StyledTetrisAlertContainer>
+                {!closeAlert && <Alert id={'alert'} isIE={isIE} text={`Block-Tetris is not working in IE.`} callback={closeBtn} buttonTitle={'OK'} />}
+            </StyledTetrisAlertContainer>
             {/* <StyledTetrisTitle>BLOCK-TETRIS</StyledTetrisTitle> */}
             <StyledTetris>
                 <Board id={'board'} board={board} callback={e => move(e)}/>
@@ -128,7 +141,9 @@ const Tetris = () => {
                         <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
                         <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
                     </div>
+                    {/* not showing in IE browser to prevent starting game*/}
                     {!isIE &&<Button callback={startGame} title={buttonTitle} />}
+                    {/* not showing in IE browser because it's not needed */}
                     {!isIE && <Display text={guide} />}
                 </aside>
             </StyledTetris>

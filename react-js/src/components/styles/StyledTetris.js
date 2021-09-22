@@ -4,15 +4,14 @@ export const StyledTetrisWrapper = styled.div`
     width: 100vw;
     height: 100vh;
     background-color: black;
-    overflow: hidden;
 `;
 
 export const StyledTetrisAlertContainer = styled.div`
     width: 30%;
     height: 100%;
-    position: absolute;
-    top: 30vh;
-    left: 35vw;
+    position: fixed;
+    top: 30%;
+    left: 35%;
 `;
 
 export const StyledTetrisTitle = styled.div`

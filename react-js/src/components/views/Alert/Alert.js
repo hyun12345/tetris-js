@@ -2,10 +2,10 @@ import React from 'react';
 import { StyledDisplay } from '../../styles/StyledDisplay';
 import Button from '../Button/Button';
 
-const Alert = ({isIE, text, closeBtn, buttonTitle}) => (
-    <StyledDisplay isIE={isIE}>
+const Alert = ({id, isIE, text, callback, buttonTitle, position}) => (
+    <StyledDisplay id={id} isIE={isIE}>
         {text}
-        <Button callBack={closeBtn} title={buttonTitle} />
+        <Button isIE={isIE} callback={callback} title={buttonTitle} position={position} />
     </StyledDisplay>
 );
 
