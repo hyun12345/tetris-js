@@ -8,7 +8,6 @@ export const StyledButton = styled.button`
     width: ${props => (props.isIE ? '25%' : '100%')};
     min-width: ${props => (props.isIE && '100px')};
     max-width: ${props => (props.isIE && '100px')};
-    margin-left: ${props => (props.isIE && 'auto')};
     border-radius: 20px;
     border: none;
     color: white;

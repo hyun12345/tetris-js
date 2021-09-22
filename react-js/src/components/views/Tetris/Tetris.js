@@ -120,8 +120,8 @@ const Tetris = () => {
             {/* alert for IE browser user */}
             {isIE && <StyledTetrisAlertContainer>
                 {!closeAlert && 
-                    <Alert isIE={isIE} 
-                            text={`Not working in IE. Try another browser.`} 
+                    <Alert  isIE={isIE}
+                            text={'Not working in IE. Try another browser.'} 
                             callback={setBrowserAlert} 
                             buttonTitle={'OK'} 
                     />
@@ -132,11 +132,11 @@ const Tetris = () => {
                 <Board id={'board'} board={board} callback={e => move(e)}/>
                 <aside>
                     {gameOver && <Display gameOver={gameOver} text="Game Over" />}
-                    <div>
+                    <React.Fragment>
                         <Display text={gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
                         <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
                         <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
-                    </div>
+                    </React.Fragment>
                     {/* not showing in IE browser*/}
                     {!isIE &&<Button callback={startGame} title={buttonTitle} />}
                     {!isIE && <Display text={guide} />}
