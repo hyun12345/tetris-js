@@ -11,7 +11,7 @@ export const StyledDisplay = styled.div`
     border: 4px solid #333;
     min-height: ${props => (props.isIE ? '80px' : '30px')};
     width: 100%;
-    min-width: ${props => (props.isIE ? '200px' : '100%')};
+    min-width: ${props => (props.isIE ? '250px' : '100%')};
     color: ${props => (props.gameOver ? 'red' : '#999')};
     border-radius: 20px;
     background: ${props => (props.isIE ? '#333' : '#000')};
@@ -19,6 +19,11 @@ export const StyledDisplay = styled.div`
     font-size: ${props => (props.isIE ? '1.5rem' : '0.8rem')};
     word-break: keep-all;
     word-wrap: keep-all;
+
+    @media screen and (max-width: 900px) {
+        width: ${props => (props.isIE && '400px')};
+        font-size: ${props => (props.isIE && '1rem')};
+    }
 
     // mobile size
     @media screen and (max-width: 600px) {

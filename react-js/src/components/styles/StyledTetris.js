@@ -14,7 +14,7 @@ export const StyledTetrisAlertContainer = styled.div`
 
     // mobile size
     @media screen and (max-width: 600px) {
-        left: 15%;
+        left: 18%;
     }
 `;
 
