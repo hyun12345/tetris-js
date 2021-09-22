@@ -1,45 +1,54 @@
 import React, { useState } from 'react';
 
-import { createCanvas, checkCollision } from '../../../settingGame';
+import { BOARD_WIDTH, createBoard, checkCollision } from '../../../settingGame';
 
 // styled-components
-import { StyledTetrisWrapper, StyledTetris } from '../../styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetris } from '../../styles/StyledTetris';
 
 // custom hooks
 // useInterval hooks from https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 import { useInterval } from '../../../_hooks/useInterval';
 import { useCurrent } from '../../../_hooks/useCurrent';
-import { useCanvas } from '../../../_hooks/useCanvas';
-import { useGameStatus } from '../../../_hooks/useGameStatus';
+import { useBoard } from '../../../_hooks/useBoard';
+import { useGameValues } from '../../../_hooks/useGameValues';
 
 // components
-import Canvas from '../Canvas/Canvas';
+import Alert from '../Alert/Alert';
+import Board from '../Board/Board';
 import Display from '../Display/Display';
-import StartButton from '../StartButton/StartButton';
+import Button from '../Button/Button';
 
 const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);
     const [gameOver, setGameOver] = useState(false);
+    const [buttonTitle, setButtonTitle] = useState('Start Game');
 
     const [current, updateCurrentPos, resetCurrent] = useCurrent();
-    const [canvas, setCanvas, rowsCleared] = useCanvas(current, resetCurrent);
-    const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
+    const [board, setBoard, rowsCleared, isIE, closeAlert, setCloseAlert] = useBoard(current, resetCurrent);
+    const [score, setScore, rows, setRows, level, setLevel] = useGameValues(rowsCleared);
+
+    const setBrowserAlert = () => {
+        console.log('setBrowserAlert clicked');
+        console.log({closeAlert:closeAlert});
+        setCloseAlert(!closeAlert);
+    }
 
     const moveCurrent = dir => {
-        if (!checkCollision(current, canvas, {x:dir, y:0})) {
+        if (!checkCollision(current, board, {x:dir, y:0})) {
             updateCurrentPos({x:dir, y:0});
         }
     };
 
     // set(reset) game
     const startGame = () => {
-        setCanvas(createCanvas());
-        setDropTime(1000);
+        setBoard(createBoard());
+        setDropTime(100);
         resetCurrent();
         setGameOver(false);
         setScore(0);
         setRows(0);
         setLevel(0);
+        setButtonTitle('Re-Start Game');
     };
 
     const drop = () => {
@@ -47,17 +56,18 @@ const Tetris = () => {
         if (rows > (level + 1) * 10) {
             setLevel(prev => prev + 1);
             /// increase speed when level increased
-            setDropTime(1000 / (level + 1) + 100);
+            setDropTime(dropTime / (level + 1) + 100);
         }
         
         // not collided : to drop the block
-        if (!checkCollision(current, canvas, {x:0, y:1})) {
+        if (!checkCollision(current, board, {x:0, y:1})) {
             updateCurrentPos({x:0, y:1, collided: false});
         
         // collided : game over
         } else {
             // game over
             if (current.pos.y < 1) {
+                console.log('gameOver');
                 setGameOver(true);
                 setDropTime(null);
             }
@@ -66,29 +76,29 @@ const Tetris = () => {
     };
 
     const move = (event) => {
+        // to get each cell size
         var bounds = event.target.getBoundingClientRect();
         var cellSize = bounds.width;
 
-        var canvas = document.getElementById('canvas');
-        var offsetLeft = canvas.offsetLeft;
-        var offsetWidth = canvas.offsetWidth;
+        var board = document.getElementById('board');
+        // value of margin-left + padding-left from board
+        var offsetLeft = board.offsetLeft;
+        // to get board area
+        var offsetWidth = board.offsetWidth;
 
         var clientX = event.clientX - offsetLeft;
 
         if (!gameOver) {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
-                if (cellSize < (offsetWidth / 10)) {
-                    var currentMouse = Math.round(clientX / cellSize);
-                    if (currentMouse !== current.pos.x) {
-                        // console.log({currentMouse:currentMouse, current:current.pos.x});
+                if (cellSize < (offsetWidth / BOARD_WIDTH)) {
+                    var mouseX = Math.round(clientX / cellSize);
+                    if (mouseX !== current.pos.x) {
                         // to the left
-                        if (currentMouse < current.pos.x) {
-                            // console.log({l_currentMouse:currentMouse, l_current:current.pos.x});
+                        if (mouseX < current.pos.x) {
                             moveCurrent(-1);
                             
                         // to the right
-                        } else if (currentMouse > current.pos.x) {
-                            // console.log({r_currentMouse:currentMouse, r_current:current.pos.x});
+                        } else if (mouseX > current.pos.x) {
                             moveCurrent(1);
                         }
                     }
@@ -103,16 +113,31 @@ const Tetris = () => {
 
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
+            {/* alert for IE browser user */}
+            {isIE && <StyledTetrisAlertContainer>
+                {!closeAlert && 
+                    <Alert  isIE={isIE}
+                            text={'Not working in IE. Try another browser.'} 
+                            callback={setBrowserAlert} 
+                            buttonTitle={'OK'} 
+                    />
+                }
+            </StyledTetrisAlertContainer>}
             <StyledTetris>
-                <Canvas id={'canvas'} canvas={canvas} callback={e => move(e)}/>
+                <Board id={'board'} board={board} callback={e => move(e)}/>
                 <aside>
                     {gameOver && <Display gameOver={gameOver} text="Game Over" />}
-                    <div>
-                        <Display text={`Score: ${score}`} />
-                        <Display text={`rows: ${rows}`} />
-                        <Display text={`Level: ${level}`} />
-                    </div>
-                    <StartButton callback={startGame} />
+                    {/* not showing in IE browser*/}
+                    {!isIE &&
+                        <React.Fragment>
+                            <Button callback={startGame} title={buttonTitle} />
+                            <Display text={gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
+                            <Display text={gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
+                            <Display text={gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
+                        </React.Fragment>
+                    }
+                    {/* only showing in IE browser */}
+                    {(isIE && closeAlert) &&<Button callback={setBrowserAlert} title={buttonTitle} />}
                 </aside>
             </StyledTetris>
         </StyledTetrisWrapper>
