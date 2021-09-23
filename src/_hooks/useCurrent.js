@@ -18,7 +18,7 @@ export const useCurrent = () => {
         }));
     };
 
-    // reset
+    // drop new block
     const resetCurrent = useCallback(() => {
         dispatch(actions.setCurrent({
             // x result : set block position center of the board
@@ -26,7 +26,8 @@ export const useCurrent = () => {
             tetromino: setBlock().shape,
             collided: false,
         }));
-    }, [dispatch]);
+    }, []);
+    // }, [dispatch]);
 
     return [updateCurrentPos, resetCurrent];
 };

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
 import { 
-    SET_DROPTIME, 
-    SET_GAMEOVER, 
     SET_ISIE,
     SET_BTNTITLE,
+    SET_DROPTIME, 
+    SET_GAMEOVER, 
     SET_CLOSEIEALERT,
     SET_CURRENT,
     SET_BOARD,
@@ -19,12 +19,11 @@ import { TETROMINOS } from '../tetrominos';
 
 //  setting default state value
 const initialState = {
-
+    isIE: checkIsIE(),
+    closeIEAlert: closeIEAlert(),
     dropTime: null,
     gameOver: false,
     btnTitle: 'Start Game',
-    isIE: checkIsIE(),
-    closeIEAlert: closeIEAlert(),
     current: {
         pos: { x: 0, y: 0 },
         tetromino: TETROMINOS[0].shape,
@@ -39,16 +38,16 @@ const initialState = {
 
 const tetris = (state = initialState, action) => {
     switch(action.type){
+        case SET_ISIE:
+            return {...state, isIE: action.payload}
+        case SET_CLOSEIEALERT:
+            return {...state, closeIEAlert: action.payload}
         case SET_DROPTIME:
             return {...state, dropTime: action.payload}
         case SET_GAMEOVER:
             return {...state, gameOver: action.payload}
         case SET_BTNTITLE:
             return {...state, btnTitle: action.payload}
-        case SET_ISIE:
-            return {...state, isIE: action.payload}
-        case SET_CLOSEIEALERT:
-            return {...state, closeIEAlert: action.payload}
         case SET_CURRENT:
             return {...state, current: action.payload}
         case SET_BOARD:

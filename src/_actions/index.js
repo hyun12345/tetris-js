@@ -1,9 +1,9 @@
 import { 
+    SET_ISIE,
+    SET_CLOSEIEALERT,
     SET_DROPTIME, 
     SET_GAMEOVER, 
     SET_BTNTITLE,
-    SET_ISIE,
-    SET_CLOSEIEALERT,
     SET_CURRENT,
     SET_BOARD,
     SET_ROWSCLEARED,
@@ -11,6 +11,20 @@ import {
     SET_ROWS, 
     SET_LEVEL,
 } from '../_actions/types';
+
+export function setIsIE(isIE){
+    return {
+        type: SET_ISIE,
+        payload: isIE,
+    }
+}
+
+export function setCloseIEAlert(closeIEAlert){
+    return {
+        type: SET_CLOSEIEALERT,
+        payload: closeIEAlert,
+    }
+}
 
 export function setDropTime(dropTime){
     return {
@@ -30,20 +44,6 @@ export function setBtnTitle(btnTitle){
     return {
         type: SET_BTNTITLE,
         payload: btnTitle,
-    }
-}
-
-export function setIsIE(isIE){
-    return {
-        type: SET_ISIE,
-        payload: isIE,
-    }
-}
-
-export function setCloseIEAlert(closeIEAlert){
-    return {
-        type: SET_CLOSEIEALERT,
-        payload: closeIEAlert,
     }
 }
 

@@ -27,8 +27,8 @@ const Tetris = () => {
     const { tetris } = useSelector((store) => ({tetris:store.tetris}), shallowEqual);
 
     const [updateCurrentPos, resetCurrent] = useCurrent();
-    useBoard(tetris.current, resetCurrent);
-    useGameValues(tetris.rowsCleared);
+    useBoard(resetCurrent);
+    useGameValues();
     useInterval(() => {
         drop();
     }, tetris.dropTime);
@@ -53,7 +53,7 @@ const Tetris = () => {
         dispatch(actions.setScore(0));
         dispatch(actions.setRows(0));
         dispatch(actions.setLevel(0));
-        dispatch(actions.setDropTime(1000));
+        dispatch(actions.setDropTime(100));
         dispatch(actions.setGameOver(false));
         dispatch(actions.setBtnTitle('Re-Start Game'));
     };
@@ -114,8 +114,6 @@ const Tetris = () => {
             }
         }
     }
-
-
 
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
