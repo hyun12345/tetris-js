@@ -6,7 +6,7 @@ import {
     SET_ISIE,
     SET_BTNTITLE,
     SET_CLOSEIEALERT,
-    // SET_CURRENT,
+    SET_CURRENT,
     // SET_BOARD,
     // SET_ROWSCLEARED,
     // SET_SCORE, 
@@ -16,7 +16,7 @@ import {
 
  import { checkIsIE, closeIEAlert } from '../settingGame';
 // import { checkIsIE, closeIEAlert, createBoard } from '../settingGame';
-// import { TETROMINOS } from '../tetrominos';
+import { TETROMINOS } from '../tetrominos';
 
 //  setting default state value
 const initialState = {
@@ -26,11 +26,11 @@ const initialState = {
     btnTitle: 'Start Game',
     isIE: checkIsIE(),
     closeIEAlert: closeIEAlert(),
-    // current: {
-    //     pos: { x: 0, y: 0 },
-    //     tetromino: TETROMINOS[0].shape,
-    //     collided: false,
-    // },
+    current: {
+        pos: { x: 0, y: 0 },
+        tetromino: TETROMINOS[0].shape,
+        collided: false,
+    },
     // board: createBoard(),
     // rowsCleared: 0,
     // score: 0,
@@ -50,8 +50,8 @@ const tetris = (state = initialState, action) => {
             return {...state, isIE: action.payload}
         case SET_CLOSEIEALERT:
             return {...state, closeIEAlert: action.payload}
-        // case SET_CURRENT:
-        //     return {...state, current: action.payload}
+        case SET_CURRENT:
+            return {...state, current: action.payload}
         // case SET_BOARD:
         //     return {...state, board: action.payload}
         // case SET_ROWSCLEARED:

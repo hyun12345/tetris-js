@@ -4,12 +4,12 @@ import {
     SET_BTNTITLE,
     SET_ISIE,
     SET_CLOSEIEALERT,
+    SET_CURRENT,
+    // SET_BOARD,
+    // SET_ROWSCLEARED,
     // SET_SCORE, 
     // SET_ROWS, 
     // SET_LEVEL, 
-    // SET_CURRENT,
-    // SET_BOARD,
-    // SET_ROWSCLEARED
 } from '../_actions/types';
 
 export function setDropTime(dropTime){
@@ -47,12 +47,12 @@ export function setCloseIEAlert(closeIEAlert){
     }
 }
 
-// export function setCurrent(current){
-//     return {
-//         type: SET_CURRENT,
-//         payload: current,
-//     }
-// }
+export function setCurrent(current){
+    return {
+        type: SET_CURRENT,
+        payload: current,
+    }
+}
 
 // export function setBoard(board){
 //     return {
