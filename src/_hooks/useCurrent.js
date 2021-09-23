@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { BOARD_WIDTH } from '../settingGame';
+import { BOARD_COLUMNS } from '../settingGame';
 import { setBlock } from '../tetrominos';
 
 // using react-redux
@@ -22,7 +22,7 @@ export const useCurrent = () => {
     const resetCurrent = useCallback(() => {
         dispatch(actions.setCurrent({
             // x result : set block position center of the board
-            pos: { x: ((BOARD_WIDTH / 2) - 1), y: 0 },
+            pos: { x: ((BOARD_COLUMNS / 2) - 1), y: 0 },
             tetromino: setBlock().shape,
             collided: false,
         }));

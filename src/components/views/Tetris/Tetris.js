@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import * as actions from '../../../_actions/index';
 
-import { BOARD_WIDTH, createBoard, checkCollision } from '../../../settingGame';
+import { BOARD_COLUMNS, createBoard, checkCollision } from '../../../settingGame';
 
 // styled-components
 import { StyledTetrisWrapper, StyledTetrisAlertContainer, StyledTetris } from '../../styles/StyledTetris';
@@ -98,7 +98,7 @@ const Tetris = () => {
 
         if (!tetris.gameOver) {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
-                if (cellSize < (offsetWidth / BOARD_WIDTH)) {
+                if (cellSize < (offsetWidth / BOARD_COLUMNS)) {
                     var mouseX = Math.round(clientX / cellSize);
                     if (mouseX !== tetris.current.pos.x) {
                         // to the left

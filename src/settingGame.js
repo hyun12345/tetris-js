@@ -1,8 +1,8 @@
-export const BOARD_WIDTH = 10;
-export const BOARD_HEIGHT = 20;
+export const BOARD_COLUMNS = 10;
+export const BOARD_ROWS = 20;
 
 export const createBoard = () =>
-    Array.from(Array(BOARD_HEIGHT), () => Array(BOARD_WIDTH).fill([0, 'clear']));
+    Array.from(Array(BOARD_ROWS), () => Array(BOARD_COLUMNS).fill([0, 'clear']));
 
 export const checkCollision = (current, board, {x:moveX, y:moveY}) => {
     for (let y = 0; y < current.tetromino.length; y++) {
