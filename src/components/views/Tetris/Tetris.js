@@ -1,7 +1,7 @@
 import React from 'react';
 
 // using react-redux
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import * as actions from '../../../_actions/index';
 
 import { BOARD_WIDTH, createBoard, checkCollision } from '../../../settingGame';
@@ -24,10 +24,10 @@ import Button from '../Button/Button';
 
 const Tetris = () => {
     const dispatch = useDispatch();
-    const tetris = useSelector((store) => store.tetris);
+    const { tetris } = useSelector((store) => ({tetris:store.tetris}), shallowEqual);
 
-    const [current, updateCurrentPos, resetCurrent] = useCurrent();
-    const [board, setBoard, rowsCleared] = useBoard(current, resetCurrent);
+    const [updateCurrentPos, resetCurrent] = useCurrent();
+    const [board, setBoard, rowsCleared] = useBoard(tetris.current, resetCurrent);
     const [score, setScore, rows, setRows, level, setLevel] = useGameValues(rowsCleared);
 
     const setBrowserAlert = () => {
@@ -37,7 +37,7 @@ const Tetris = () => {
     }
 
     const moveCurrent = dir => {
-        if (!checkCollision(current, board, {x:dir, y:0})) {
+        if (!checkCollision(tetris.current, board, {x:dir, y:0})) {
             updateCurrentPos({x:dir, y:0});
         }
     };
@@ -49,7 +49,7 @@ const Tetris = () => {
         setScore(0);
         setRows(0);
         setLevel(0);
-        dispatch(actions.setDropTime(1000));
+        dispatch(actions.setDropTime(100));
         dispatch(actions.setGameOver(false));
         dispatch(actions.setBtnTitle('Re-Start Game'));
     };
@@ -63,13 +63,13 @@ const Tetris = () => {
         }
         
         // not collided : to drop the block
-        if (!checkCollision(current, board, {x:0, y:1})) {
+        if (!checkCollision(tetris.current, board, {x:0, y:1})) {
             updateCurrentPos({x:0, y:1, collided: false});
         
         // collided : game over
         } else {
             // game over
-            if (current.pos.y < 1) {
+            if (tetris.current.pos.y < 1) {
                 console.log('gameOver');
                 dispatch(actions.setGameOver(true));
                 dispatch(actions.setDropTime(null));
@@ -96,13 +96,13 @@ const Tetris = () => {
             if (clientX >= 0 && clientX < (offsetWidth - cellSize)) {
                 if (cellSize < (offsetWidth / BOARD_WIDTH)) {
                     var mouseX = Math.round(clientX / cellSize);
-                    if (mouseX !== current.pos.x) {
+                    if (mouseX !== tetris.current.pos.x) {
                         // to the left
-                        if (mouseX < current.pos.x) {
+                        if (mouseX < tetris.current.pos.x) {
                             moveCurrent(-1);
                             
                         // to the right
-                        } else if (mouseX > current.pos.x) {
+                        } else if (mouseX > tetris.current.pos.x) {
                             moveCurrent(1);
                         }
                     }

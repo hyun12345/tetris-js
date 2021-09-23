@@ -1,32 +1,32 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { BOARD_WIDTH } from '../settingGame';
-import { TETROMINOS, setBlock } from '../tetrominos';
+import { setBlock } from '../tetrominos';
+
+// using react-redux
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import * as actions from '../_actions/index';
 
 export const useCurrent = () => {
-    // set default(board)
-    const [current, setCurrent] = useState({
-        pos: { x: 0, y: 0 },
-        tetromino: TETROMINOS[0].shape,
-        collided: false,
-    });
+    const dispatch = useDispatch();
+    const { tetrisCurrent } = useSelector((store) => ({tetrisCurrent:store.tetris.current}), shallowEqual);
 
     const updateCurrentPos = ({ x, y, collided }) => {
-        setCurrent(prev => ({
-            ...prev,
-            pos: { x: (prev.pos.x += x), y: (prev.pos.y += y) },
+        dispatch(actions.setCurrent({
+            pos: { x:(tetrisCurrent.pos.x += x), y:(tetrisCurrent.pos.y += y) },
+            tetromino: tetrisCurrent.tetromino,
             collided,
         }));
     };
 
     // reset
     const resetCurrent = useCallback(() => {
-        setCurrent({
+        dispatch(actions.setCurrent({
             // x result : set block position center of the board
             pos: { x: ((BOARD_WIDTH / 2) - 1), y: 0 },
             tetromino: setBlock().shape,
             collided: false,
-        });
-    }, []);
+        }));
+    }, [dispatch]);
 
-    return [current, updateCurrentPos, resetCurrent];
+    return [updateCurrentPos, resetCurrent];
 };
