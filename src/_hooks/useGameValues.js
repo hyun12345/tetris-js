@@ -1,9 +1,14 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
+
+// using react-redux
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import * as actions from '../_actions/index';
 
 export const useGameValues = rowsCleared => {
-    const [score, setScore] = useState(0);
-    const [rows, setRows] = useState(0);
-    const [level, setLevel] = useState(0);
+    const dispatch = useDispatch();
+    const { score } = useSelector((store) => ({score:store.tetris.score}), shallowEqual);
+    const { rows } = useSelector((store) => ({rows:store.tetris.rows}), shallowEqual);
+    const { level } = useSelector((store) => ({level:store.tetris.level}), shallowEqual);
 
     // original tetris game score
     const linePoints = useMemo(() => {
@@ -15,15 +20,12 @@ export const useGameValues = rowsCleared => {
         // if have score
         if (rowsCleared > 0) {
             // original tetrigs game score calculated
-            setScore(prev => prev + linePoints[rowsCleared - 1] * (level + 1));
-            setRows(prev => prev + rowsCleared);
+            dispatch(actions.setScore(score + linePoints[rowsCleared - 1] * (level + 1)));
+            dispatch(actions.setRows(rows + rowsCleared));
         }
-    }, [level, linePoints, rowsCleared]);
+    }, [linePoints, rowsCleared, dispatch, score, rows, level, ]);
 
     useEffect(() => {
         calcScore();
     }, [calcScore, rowsCleared, score]);
-
-    // return set-- for restarting game
-    return [score, setScore, rows, setRows, level, setLevel];
 };

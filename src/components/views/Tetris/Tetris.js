@@ -28,7 +28,10 @@ const Tetris = () => {
 
     const [updateCurrentPos, resetCurrent] = useCurrent();
     useBoard(tetris.current, resetCurrent);
-    const [score, setScore, rows, setRows, level, setLevel] = useGameValues(tetris.rowsCleared);
+    useGameValues(tetris.rowsCleared);
+    useInterval(() => {
+        drop();
+    }, tetris.dropTime);
 
     const setBrowserAlert = () => {
         console.log('setAlert clicked');
@@ -44,22 +47,23 @@ const Tetris = () => {
 
     // set(reset) game
     const startGame = () => {
+        console.log('game start');
         dispatch(actions.setBoard(createBoard()));
         resetCurrent();
-        setScore(0);
-        setRows(0);
-        setLevel(0);
-        dispatch(actions.setDropTime(100));
+        dispatch(actions.setScore(0));
+        dispatch(actions.setRows(0));
+        dispatch(actions.setLevel(0));
+        dispatch(actions.setDropTime(1000));
         dispatch(actions.setGameOver(false));
         dispatch(actions.setBtnTitle('Re-Start Game'));
     };
 
     const drop = () => {
         // increate level when cleared 10 rows
-        if (rows > (level + 1) * 10) {
-            setLevel(prev => prev + 1);
+        if (tetris.rows > (tetris.level + 1) * 10) {
+            dispatch(actions.setLevel(tetris.level + 1));
             /// increase speed when level increased
-            dispatch(actions.setDropTime(tetris.dropTime / (level + 1) + 100));
+            dispatch(actions.setDropTime(tetris.dropTime / (tetris.level + 1) + 100));
         }
         
         // not collided : to drop the block
@@ -70,7 +74,7 @@ const Tetris = () => {
         } else {
             // game over
             if (tetris.current.pos.y < 1) {
-                console.log('gameOver');
+                console.log('game over');
                 dispatch(actions.setGameOver(true));
                 dispatch(actions.setDropTime(null));
 
@@ -111,9 +115,7 @@ const Tetris = () => {
         }
     }
 
-    useInterval(() => {
-        drop();
-    }, tetris.dropTime);
+
 
     return (
         <StyledTetrisWrapper role="button" tabIndex="0">
@@ -135,9 +137,9 @@ const Tetris = () => {
                     {!tetris.isIE &&
                         <React.Fragment>
                             <Button callback={startGame} title={tetris.btnTitle} />
-                            <Display text={tetris.gameOver ? (`Final-Score: ${score}`):(`Score: ${score}`)} />
-                            <Display text={tetris.gameOver ? (`Final-Rows: ${rows}`):(`Rows: ${rows}`)} />
-                            <Display text={tetris.gameOver ? (`Final-Level: ${level}`):(`Level: ${level}`)} />
+                            <Display text={tetris.gameOver ? (`Final-Score: ${tetris.score}`):(`Score: ${tetris.score}`)} />
+                            <Display text={tetris.gameOver ? (`Final-Rows: ${tetris.rows}`):(`Rows: ${tetris.rows}`)} />
+                            <Display text={tetris.gameOver ? (`Final-Level: ${tetris.level}`):(`Level: ${tetris.level}`)} />
                         </React.Fragment>
                     }
                     {/* only showing in IE browser */}
