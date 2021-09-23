@@ -8,12 +8,12 @@ import * as actions from '../_actions/index';
 
 export const useCurrent = () => {
     const dispatch = useDispatch();
-    const { tetrisCurrent } = useSelector((store) => ({tetrisCurrent:store.tetris.current}), shallowEqual);
+    const { current } = useSelector((store) => ({current:store.tetris.current}), shallowEqual);
 
     const updateCurrentPos = ({ x, y, collided }) => {
         dispatch(actions.setCurrent({
-            pos: { x:(tetrisCurrent.pos.x += x), y:(tetrisCurrent.pos.y += y) },
-            tetromino: tetrisCurrent.tetromino,
+            pos: { x:(current.pos.x += x), y:(current.pos.y += y) },
+            tetromino: current.tetromino,
             collided,
         }));
     };

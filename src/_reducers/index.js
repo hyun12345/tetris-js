@@ -7,15 +7,14 @@ import {
     SET_BTNTITLE,
     SET_CLOSEIEALERT,
     SET_CURRENT,
-    // SET_BOARD,
-    // SET_ROWSCLEARED,
-    // SET_SCORE, 
-    // SET_ROWS, 
-    // SET_LEVEL, 
+    SET_BOARD,
+    SET_ROWSCLEARED,
+    SET_SCORE, 
+    SET_ROWS, 
+    SET_LEVEL, 
  } from '../_actions/types';
 
- import { checkIsIE, closeIEAlert } from '../settingGame';
-// import { checkIsIE, closeIEAlert, createBoard } from '../settingGame';
+import { checkIsIE, closeIEAlert, createBoard } from '../settingGame';
 import { TETROMINOS } from '../tetrominos';
 
 //  setting default state value
@@ -31,11 +30,11 @@ const initialState = {
         tetromino: TETROMINOS[0].shape,
         collided: false,
     },
-    // board: createBoard(),
-    // rowsCleared: 0,
-    // score: 0,
-    // rows: 0,
-    // level: 0,
+    board: createBoard(),
+    rowsCleared: 0,
+    score: 0,
+    rows: 0,
+    level: 0,
 }
 
 const tetris = (state = initialState, action) => {
@@ -52,16 +51,16 @@ const tetris = (state = initialState, action) => {
             return {...state, closeIEAlert: action.payload}
         case SET_CURRENT:
             return {...state, current: action.payload}
-        // case SET_BOARD:
-        //     return {...state, board: action.payload}
-        // case SET_ROWSCLEARED:
-        //     return {...state, rowsCleared: action.payload}
-        // case SET_SCORE:
-        //     return {...state, score: action.payload}
-        // case SET_ROWS:
-        //     return { ...state, rows: action.payload}
-        // case SET_LEVEL:
-        //     return {...state, level: action.payload}
+        case SET_BOARD:
+            return {...state, board: action.payload}
+        case SET_ROWSCLEARED:
+            return {...state, rowsCleared: action.payload}
+        case SET_SCORE:
+            return {...state, score: action.payload}
+        case SET_ROWS:
+            return { ...state, rows: action.payload}
+        case SET_LEVEL:
+            return {...state, level: action.payload}
         default:
             return state;
     }

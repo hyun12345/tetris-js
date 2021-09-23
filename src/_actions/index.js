@@ -5,11 +5,11 @@ import {
     SET_ISIE,
     SET_CLOSEIEALERT,
     SET_CURRENT,
-    // SET_BOARD,
-    // SET_ROWSCLEARED,
-    // SET_SCORE, 
-    // SET_ROWS, 
-    // SET_LEVEL, 
+    SET_BOARD,
+    SET_ROWSCLEARED,
+    SET_SCORE, 
+    SET_ROWS, 
+    SET_LEVEL,
 } from '../_actions/types';
 
 export function setDropTime(dropTime){
@@ -54,37 +54,37 @@ export function setCurrent(current){
     }
 }
 
-// export function setBoard(board){
-//     return {
-//         type: SET_BOARD,
-//         payload: board,
-//     }
-// }
+export function setBoard(board){
+    return {
+        type: SET_BOARD,
+        payload: board,
+    }
+}
 
-// export function setRowsCleared(rowsCleared){
-//     return {
-//         type: SET_ROWSCLEARED,
-//         payload: rowsCleared,
-//     }
-// }
+export function setRowsCleared(rowsCleared){
+    return {
+        type: SET_ROWSCLEARED,
+        payload: rowsCleared,
+    }
+}
 
-// export function setScore(score){
-//     return {
-//         type: SET_SCORE,
-//         payload: score,
-//     }
-// }
+export function setScore(score){
+    return {
+        type: SET_SCORE,
+        payload: score,
+    }
+}
 
-// export function setRows(rows){
-//     return {
-//         type: SET_ROWS,
-//         payload: rows,
-//     }
-// }
+export function setRows(rows){
+    return {
+        type: SET_ROWS,
+        payload: rows,
+    }
+}
 
-// export function setLevel(level){
-//     return {
-//         type: SET_LEVEL,
-//         payload: level,
-//     }
-// }
+export function setLevel(level){
+    return {
+        type: SET_LEVEL,
+        payload: level,
+    }
+}

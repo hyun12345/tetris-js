@@ -27,8 +27,8 @@ const Tetris = () => {
     const { tetris } = useSelector((store) => ({tetris:store.tetris}), shallowEqual);
 
     const [updateCurrentPos, resetCurrent] = useCurrent();
-    const [board, setBoard, rowsCleared] = useBoard(tetris.current, resetCurrent);
-    const [score, setScore, rows, setRows, level, setLevel] = useGameValues(rowsCleared);
+    useBoard(tetris.current, resetCurrent);
+    const [score, setScore, rows, setRows, level, setLevel] = useGameValues(tetris.rowsCleared);
 
     const setBrowserAlert = () => {
         console.log('setAlert clicked');
@@ -37,14 +37,14 @@ const Tetris = () => {
     }
 
     const moveCurrent = dir => {
-        if (!checkCollision(tetris.current, board, {x:dir, y:0})) {
+        if (!checkCollision(tetris.current, tetris.board, {x:dir, y:0})) {
             updateCurrentPos({x:dir, y:0});
         }
     };
 
     // set(reset) game
     const startGame = () => {
-        setBoard(createBoard());
+        dispatch(actions.setBoard(createBoard()));
         resetCurrent();
         setScore(0);
         setRows(0);
@@ -63,7 +63,7 @@ const Tetris = () => {
         }
         
         // not collided : to drop the block
-        if (!checkCollision(tetris.current, board, {x:0, y:1})) {
+        if (!checkCollision(tetris.current, tetris.board, {x:0, y:1})) {
             updateCurrentPos({x:0, y:1, collided: false});
         
         // collided : game over
@@ -84,11 +84,11 @@ const Tetris = () => {
         var bounds = event.target.getBoundingClientRect();
         var cellSize = bounds.width;
 
-        var board = document.getElementById('board');
+        var boardDiv = document.getElementById('board');
         // value of margin-left + padding-left from board
-        var offsetLeft = board.offsetLeft;
+        var offsetLeft = boardDiv.offsetLeft;
         // to get board area
-        var offsetWidth = board.offsetWidth;
+        var offsetWidth = boardDiv.offsetWidth;
 
         var clientX = event.clientX - offsetLeft;
 
@@ -128,7 +128,7 @@ const Tetris = () => {
                 }
             </StyledTetrisAlertContainer>}
             <StyledTetris>
-                <Board id={'board'} board={board} callback={e => move(e)}/>
+                <Board id={'board'} board={tetris.board} callback={e => move(e)}/>
                 <aside>
                     {tetris.gameOver && <Display gameOver={tetris.gameOver} text="Game Over" />}
                     {/* not showing in IE browser*/}

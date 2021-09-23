@@ -1,17 +1,24 @@
-import { useState, useEffect } from 'react';
-import { createBoard } from '../settingGame';
+import { useEffect } from 'react';
+
+// using react-redux
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import * as actions from '../_actions/index';
 
 export const useBoard = (current, resetCurrent) => {
-    const [board, setBoard] = useState(createBoard());
-    const [rowsCleared, setRowsCleared] = useState(0);
+    const dispatch = useDispatch();
+    const { board } = useSelector((store) => ({board:store.tetris.board}), shallowEqual);
+    const { rowsCleared } = useSelector((store) => ({rowsCleared:store.tetris.rowsCleared}), shallowEqual);
+    const { btnTitle } = useSelector((store) => ({btnTitle:store.tetris.btnTitle}), shallowEqual);
+    const { gameOver } = useSelector((store) => ({gameOver:store.tetris.gameOver}), shallowEqual);
 
     useEffect(() => {
-        setRowsCleared(0);
+        dispatch(actions.setRowsCleared(0));
         const sweepRows = newBoard =>
             // acc : accumulator
             newBoard.reduce((acc, row) => {
                 if (row.findIndex(cell => cell[0] === 0) === -1) {
-                    setRowsCleared(prev => prev + 1);
+                    // block has two rows so have to add 2
+                    dispatch(actions.setRowsCleared(rowsCleared + 2));
                     acc.unshift(new Array(newBoard[0].length).fill([0, 'clear']));
                     return acc;
                 }
@@ -44,10 +51,12 @@ export const useBoard = (current, resetCurrent) => {
                 }
             }
             return newBoard;
-          };
+        };
 
-          setBoard(prev => updateBoard(prev));
-      }, [current, resetCurrent, ]);
+        // update board only when game playing(block droping)
+        if (!gameOver && btnTitle !== 'Start Game') {
+            dispatch(actions.setBoard(updateBoard(board)));
+        }
 
-      return [board, setBoard, rowsCleared];
+    }, [current, resetCurrent, dispatch, board, rowsCleared, gameOver, btnTitle, ]);
 };
