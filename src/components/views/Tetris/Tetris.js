@@ -53,7 +53,7 @@ const Tetris = () => {
         dispatch(actions.setScore(0));
         dispatch(actions.setRows(0, tetris.rowsCleared));
         dispatch(actions.setLevel(0));
-        dispatch(actions.setDropTime(100));
+        dispatch(actions.setDropTime(1000));
         dispatch(actions.setGameOver(false));
         dispatch(actions.setBtnTitle('Re-Start Game'));
     };
