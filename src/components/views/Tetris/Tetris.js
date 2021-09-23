@@ -27,7 +27,7 @@ const Tetris = () => {
     const { tetris } = useSelector((store) => ({tetris:store.tetris}), shallowEqual);
 
     const [updateCurrentPos, resetCurrent] = useCurrent();
-    useBoard(resetCurrent);
+    useBoard(tetris.gameOver, tetris.btnTitle,resetCurrent);
     useGameValues();
     useInterval(() => {
         drop();

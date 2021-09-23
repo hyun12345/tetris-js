@@ -26,8 +26,7 @@ export const useCurrent = () => {
             tetromino: setBlock().shape,
             collided: false,
         }));
-    }, []);
-    // }, [dispatch]);
+    }, [dispatch]);
 
     return [updateCurrentPos, resetCurrent];
 };

@@ -23,8 +23,7 @@ export const useGameValues = () => {
             dispatch(actions.setScore(score + linePoints[rowsCleared - 1] * (level + 1)));
             dispatch(actions.setRows(rows + rowsCleared));
         }
-    }, [linePoints, rowsCleared, level, ]);
-    // }, [linePoints, rowsCleared, dispatch, score, rows, level, ]);
+    }, [linePoints, rowsCleared, level, dispatch]);
 
     useEffect(() => {
         calcScore();

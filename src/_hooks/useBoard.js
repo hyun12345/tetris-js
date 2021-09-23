@@ -4,13 +4,11 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import * as actions from '../_actions/index';
 
-export const useBoard = (resetCurrent) => {
+export const useBoard = (gameOver, btnTitle, resetCurrent) => {
     const dispatch = useDispatch();
     const { current } = useSelector((store) => ({current:store.tetris.current}), shallowEqual);
     const { board } = useSelector((store) => ({board:store.tetris.board}), shallowEqual);
     const { rowsCleared } = useSelector((store) => ({rowsCleared:store.tetris.rowsCleared}), shallowEqual);
-    const { btnTitle } = useSelector((store) => ({btnTitle:store.tetris.btnTitle}), shallowEqual);
-    const { gameOver } = useSelector((store) => ({gameOver:store.tetris.gameOver}), shallowEqual);
 
     useEffect(() => {
         dispatch(actions.setRowsCleared(0));
@@ -58,6 +56,5 @@ export const useBoard = (resetCurrent) => {
         if (!gameOver && btnTitle !== 'Start Game') {
             dispatch(actions.setBoard(updateBoard(board)));
         }
-    }, [current, resetCurrent, ]);
-    // }, [current, resetCurrent, dispatch, board, rowsCleared, gameOver, btnTitle, ]);
+    }, [current, resetCurrent, dispatch, gameOver, btnTitle]);
 };
