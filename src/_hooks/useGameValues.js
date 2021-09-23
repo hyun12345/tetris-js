@@ -21,7 +21,7 @@ export const useGameValues = () => {
         if (rowsCleared > 0) {
             // original tetrigs game score calculated
             dispatch(actions.setScore(score + linePoints[rowsCleared - 1] * (level + 1)));
-            dispatch(actions.setRows(rows + rowsCleared));
+            dispatch(actions.setRows(rows, rowsCleared));
         }
     }, [linePoints, rowsCleared, level, dispatch]);
 

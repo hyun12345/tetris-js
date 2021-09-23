@@ -51,7 +51,7 @@ const Tetris = () => {
         dispatch(actions.setBoard(createBoard()));
         resetCurrent();
         dispatch(actions.setScore(0));
-        dispatch(actions.setRows(0));
+        dispatch(actions.setRows(0, tetris.rowsCleared));
         dispatch(actions.setLevel(0));
         dispatch(actions.setDropTime(100));
         dispatch(actions.setGameOver(false));

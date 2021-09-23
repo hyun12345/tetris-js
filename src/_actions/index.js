@@ -75,10 +75,10 @@ export function setScore(score){
     }
 }
 
-export function setRows(rows){
+export function setRows(rows, rowsCleared){
     return {
         type: SET_ROWS,
-        payload: rows,
+        payload: rows + rowsCleared,
     }
 }
 
